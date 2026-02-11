@@ -17,6 +17,164 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 
 ---
 
+## Visão Geral do Storefront VTEX IO
+
+O VTEX IO é um ecossistema de desenvolvimento baseado em **apps**, **blocos declarativos**, **interfaces JSON** e **composição de componentes**. Todo o storefront é construído de forma declarativa, orientada a configuração e composição.
+
+---
+
+
+# 🧭 Função do SKILL.md
+
+Este arquivo serve como:
+
+* Índice semântico
+* Mapa cognitivo
+* Guia arquitetural
+* Base de treinamento dos agentes
+* Sistema de referência
+
+---
+
+Seção base criada para expansão futura:
+
+* Layout System
+* Store Components
+* PDP
+* Shelf
+* Hooks
+* Backend
+* Integrações
+
+---
+
+# 🧱 Estrutura Declarativa do Storefront
+
+## Blocos (Blocks)
+
+Blocos são as unidades básicas de construção da interface.
+
+Eles são declarados em arquivos `.json` e representam componentes visuais ou estruturais.
+
+### Estrutura básica de um bloco:
+
+```json
+{
+  "store.home": {
+    "blocks": ["flex-layout.row#main"]
+  },
+
+  "flex-layout.row#main": {
+    "children": [
+      "flex-layout.col#left",
+      "flex-layout.col#right"
+    ],
+    "props": {
+      "fullWidth": true,
+      "preserveLayoutOnMobile": true
+    }
+  }
+}
+```
+
+---
+
+## Propriedades Fundamentais
+
+### `props`
+
+Configura o comportamento e estilo do bloco.
+
+### `title`
+
+Usado para identificação semântica no Site Editor.
+
+
+# 🧩 Construção de Componentes
+
+## Componentes Nativos
+
+São fornecidos pelos apps oficiais da VTEX:
+
+* vtex.store-components
+* vtex.flex-layout
+* vtex.store
+* vtex.product-summary
+
+## Componentes Customizados (React)
+
+Fluxo:
+
+1. Criação do componente React
+2. Registro no `interfaces.json`
+3. Exposição no `manifest.json`
+4. Uso declarativo via JSON
+
+---
+
+# 📦 manifest.json
+
+O `manifest.json` define o app VTEX IO.
+
+### Responsabilidades:
+
+* Nome do app
+* Vendor
+* Versão
+* Dependências
+* Builders
+* Policies
+
+### Exemplo:
+
+```json
+{
+  "vendor": "minhaempresa",
+  "name": "store-theme",
+  "version": "1.0.0",
+  "builders": {
+    "store": "0.x",
+    "react": "3.x"
+  },
+  "dependencies": {
+    "vtex.store": "2.x",
+    "vtex.flex-layout": "0.x"
+  }
+}
+```
+
+---
+
+# ➕ Apps (Dependencies)
+
+Apps são módulos instaláveis no VTEX IO.
+
+Eles são adicionados no `manifest.json` em `dependencies`.
+
+Exemplo:
+
+```json
+"dependencies": {
+  "vtex.store": "2.x",
+  "vtex.flex-layout": "0.x",
+  "vtex.store-components": "3.x"
+}
+```
+
+---
+
+# 🧠 Modelo Mental
+
+VTEX IO não é frontend tradicional.
+
+É um **sistema declarativo de composição de blocos**.
+
+Você não constrói telas.
+
+Você constrói **árvores de blocos**.
+
+---
+
 ## 🧱 Layout System (Store Framework)
 
 | Guide | Status | When to Read |

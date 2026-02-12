@@ -278,6 +278,7 @@ Dynamic injection via `<ExtensionPoint />`.
 2. Create custom React blocks only when necessary
 3. Never access APIs directly from components
 4. Always declare informative titles for blocks with custom props on site-editor
+5. Create folder structure for complex json components, do not create a single json file with all the components
 
 ```
 

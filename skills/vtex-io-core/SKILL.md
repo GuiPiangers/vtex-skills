@@ -50,6 +50,7 @@ Agent reasoning:
 | **Components** ||||
 | `guides/components/custom-components.md` | 🔴 **CRITICAL** | create block, custom component, new block, React | Build custom blocks |
 | `guides/components/product-summary.md` | 🟠 HIGH | product card, shelf, product list, showcase | Product displays |
+| `guides/components/product-prices.md` | 🟠 HIGH | product prices, shelf, product price | Product prices display |
 | **Styling** ||||
 | `guides/styles/css-handles.md` | 🔴 **CRITICAL** | Styling, CSS Handles, CSS | Styling custom blocks |
 | **Contexts** ||||

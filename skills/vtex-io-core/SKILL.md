@@ -46,6 +46,7 @@ Agent reasoning:
 |-------|----------|----------|---------|
 | **Layout** ||||
 | `guides/layout/flex-layout.md` | 🔴 **CRITICAL** | grid, row, col, layout, structure, flexbox | Flexbox layout system |
+| `guides/layout/slider-layout.md` | 🟡 MEDIUM | slider, carousel, slide | Slider layout system |
 | `guides/layout/responsive-layout.md` | 🟡 MEDIUM | mobile, responsive, breakpoint, device | Responsive patterns |
 | **Components** ||||
 | `guides/components/custom-components.md` | 🔴 **CRITICAL** | create block, custom component, new block, React | Build custom blocks |

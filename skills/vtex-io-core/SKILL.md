@@ -44,24 +44,23 @@ Agent reasoning:
 
 | Guide | Priority | Triggers | Purpose |
 |-------|----------|----------|---------|
-| **Layout** ||||
-| `guides/layout/flex-layout.md` | 🔴 **CRITICAL** | grid, row, col, layout, structure, flexbox | Flexbox layout system |
-| `guides/layout/slider-layout.md` | 🟡 MEDIUM | slider, carousel, slide | Slider layout system |
-| `guides/layout/responsive-layout.md` | 🟡 MEDIUM | mobile, responsive, breakpoint, device | Responsive patterns |
 | **Components** ||||
-| `guides/components/custom-components.md` | 🔴 **CRITICAL** | create block, custom component, new block, React | Build custom blocks |
-| `guides/components/product-summary.md` | 🟠 HIGH | product card, shelf, product list, showcase | Product displays |
-| `guides/components/product-prices.md` | 🟠 HIGH | product prices, shelf, product price | Product prices display |
+| `.agent/skills/components/flex-layout.md` | 🔴 **CRITICAL** | grid, row, col, layout, structure, flexbox | Flexbox layout system |
+| `.agent/skills/components/slider-layout.md` | 🟡 MEDIUM | slider, carousel, slide | Slider layout system |
+| `.agent/skills/components/responsive-layout.md` | 🟡 MEDIUM | mobile, responsive, breakpoint, device | Responsive patterns |
+| `.agent/skills/components/custom-components.md` | 🔴 **CRITICAL** | create block, custom component, new block, React | Build custom blocks |
+| `.agent/skills/components/product-summary.md` | 🟠 HIGH | product card, shelf, product list, showcase | Product displays |
+| `.agent/skills/components/product-prices.md` | 🟠 HIGH | product prices, shelf, product price | Product prices display |
 | **Styling** ||||
-| `guides/styles/css-handles.md` | 🔴 **CRITICAL** | Styling, CSS Handles, CSS | Styling custom blocks |
+| `.agent/skills/styles/css-handles.md` | 🔴 **CRITICAL** | Styling, CSS Handles, CSS | Styling custom blocks |
 | **Contexts** ||||
-| `guides/contexts/product-context.md` | 🟠 HIGH | product data, PDP, product info, product context | Product information or manipulate product infos and SKUs |
-| `guides/contexts/useOrderForm.md` | 🟠 HIGH | cart, order, checkout, add to cart | Cart management |
-| `guides/contexts/useRuntime.md` | 🟡 MEDIUM | route, navigation, query params, runtime | Runtime context |
+| `.agent/skills/contexts/product-context.md` | 🟠 HIGH | product data, PDP, product info, product context | Product information or manipulate product infos and SKUs |
+| `.agent/skills/contexts/useOrderForm.md` | 🟠 HIGH | cart, order, checkout, add to cart | Cart management |
+| `.agent/skills/contexts/useRuntime.md` | 🟡 MEDIUM | route, navigation, query params, runtime | Runtime context |
 | **Backend** ||||
-| `guides/backend/services-api.md` | 🟡 **CRITICAL** | services, route handler, middleware, validation, API | Request handling |
-| `guides/backend/clients.md` | 🔴 **CRITICAL** | API call, HTTP request, external API, fetch, clients | HTTP clients |
-| `guides/backend/masterdata.md` | 🟠 HIGH | masterdata | Masterdata integration |
+| `.agent/skills/backend/services-api.md` | 🟡 **CRITICAL** | services, route handler, middleware, validation, API | Request handling |
+| `.agent/skills/backend/clients.md` | 🔴 **CRITICAL** | API call, HTTP request, external API, fetch, clients | HTTP clients |
+| `.agent/skills/backend/masterdata.md` | 🟠 HIGH | masterdata | Masterdata integration |
 
 
 ---
@@ -80,23 +79,20 @@ Agent reasoning:
 ```
 Task: "Create a custom product badge component"
 → Triggers: "create", "custom", "component"
-→ Loads: guides/components/custom-components.md (🔴 CRITICAL)
+→ Loads: .agent/skills/components/custom-components.md (🔴 CRITICAL)
 
 Task: "Build PDP with product info and add to cart button"
 → Triggers: "product info", "add to cart"
-→ Loads: guides/hooks/useProduct.md (🟠), guides/hooks/useOrderForm.md (🟠)
+→ Loads: .agent/skills/hooks/useProduct.md (🟠), .agent/skills/hooks/useOrderForm.md (🟠)
 
 Task: "Create responsive grid layout for homepage"
 → Triggers: "responsive", "grid", "layout"
-→ Loads: guides/layout/flex-layout.md (🔴), guides/layout/responsive-layout.md (🟡)
+→ Loads: .agent/skills/components/flex-layout.md (🔴), .agent/skills/components/responsive-layout.md (🟡)
 
 Task: "Fetch data from external API in backend"
 → Triggers: "API", "fetch", "backend"
-→ Loads: guides/backend/clients.md (🔴 CRITICAL)
+→ Loads: .agent/skills/backend/clients.md (🔴 CRITICAL)
 
-Task: "Add custom navigation menu"
-→ Triggers: "navigation", "menu"
-→ Loads: guides/components/menu.md (🟡)
 ```
 
 ---

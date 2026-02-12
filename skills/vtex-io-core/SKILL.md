@@ -47,13 +47,9 @@ Agent reasoning:
 | **Layout** ||||
 | `guides/layout/flex-layout.md` | 🔴 **CRITICAL** | grid, row, col, layout, structure, flexbox | Flexbox layout system |
 | `guides/layout/responsive-layout.md` | 🟡 MEDIUM | mobile, responsive, breakpoint, device | Responsive patterns |
-| `guides/layout/stack-layout.md` | 🟡 MEDIUM | stack, overlay, z-index, layer | Layered content |
 | **Components** ||||
 | `guides/components/custom-components.md` | 🔴 **CRITICAL** | create block, custom component, new block, React | Build custom blocks |
 | `guides/components/product-summary.md` | 🟠 HIGH | product card, shelf, product list, showcase | Product displays |
-| `guides/components/search-result.md` | 🟠 HIGH | search page, filter, category, listing | Search & filters |
-| `guides/components/menu.md` | 🟡 MEDIUM | navigation, menu, header, navbar | Navigation menus |
-| `guides/components/minicart.md` | 🟡 MEDIUM | cart icon, minicart, cart preview | Cart widget |
 | **Styling** ||||
 | `guides/styles/css-handles.md` | 🔴 **CRITICAL** | Styling, CSS Handles, CSS | Styling custom blocks |
 | **Contexts** ||||

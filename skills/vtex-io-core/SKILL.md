@@ -61,10 +61,10 @@ Agent reasoning:
 | `guides/contexts/useOrderForm.md` | 🟠 HIGH | cart, order, checkout, add to cart | Cart management |
 | `guides/contexts/useRuntime.md` | 🟡 MEDIUM | route, navigation, query params, runtime | Runtime context |
 | **Backend** ||||
+| `guides/backend/services-api.md` | 🟡 **CRITICAL** | services, route handler, middleware, validation, API | Request handling |
 | `guides/backend/clients.md` | 🔴 **CRITICAL** | API call, HTTP request, external API, fetch | HTTP clients |
 | `guides/backend/graphql.md` | 🟠 HIGH | GraphQL, query, mutation, schema | GraphQL integration |
-| `guides/backend/middlewares.md` | 🟡 MEDIUM | route handler, middleware, validation | Request handling |
-| `guides/backend/resolvers.md` | 🟡 MEDIUM | resolver, GraphQL resolver, data source | GraphQL resolvers |
+
 
 ---
 

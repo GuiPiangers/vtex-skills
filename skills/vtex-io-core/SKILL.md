@@ -56,10 +56,10 @@ Agent reasoning:
 | `guides/components/minicart.md` | 🟡 MEDIUM | cart icon, minicart, cart preview | Cart widget |
 | **Styling** ||||
 | `guides/styles/css-handles.md` | 🔴 **CRITICAL** | Styling, CSS Handles, CSS | Styling custom blocks |
-| **Hooks** ||||
-| `guides/hooks/useProduct.md` | 🟠 HIGH | product data, PDP, product info, product context | Product information |
-| `guides/hooks/useOrderForm.md` | 🟠 HIGH | cart, order, checkout, add to cart | Cart management |
-| `guides/hooks/useRuntime.md` | 🟡 MEDIUM | route, navigation, query params, runtime | Runtime context |
+| **Contexts** ||||
+| `guides/contexts/product-context.md` | 🟠 HIGH | product data, PDP, product info, product context | Product information or manipulate product infos and SKUs |
+| `guides/contexts/useOrderForm.md` | 🟠 HIGH | cart, order, checkout, add to cart | Cart management |
+| `guides/contexts/useRuntime.md` | 🟡 MEDIUM | route, navigation, query params, runtime | Runtime context |
 | **Backend** ||||
 | `guides/backend/clients.md` | 🔴 **CRITICAL** | API call, HTTP request, external API, fetch | HTTP clients |
 | `guides/backend/graphql.md` | 🟠 HIGH | GraphQL, query, mutation, schema | GraphQL integration |

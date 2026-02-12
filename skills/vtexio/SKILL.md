@@ -54,6 +54,8 @@ Agent reasoning:
 | `guides/components/search-result.md` | 🟠 HIGH | search page, filter, category, listing | Search & filters |
 | `guides/components/menu.md` | 🟡 MEDIUM | navigation, menu, header, navbar | Navigation menus |
 | `guides/components/minicart.md` | 🟡 MEDIUM | cart icon, minicart, cart preview | Cart widget |
+| **Styling** ||||
+| `guides/styles/css-handles.md` | 🔴 **CRITICAL** | Styling, CSS Handles, CSS | Styling custom blocks |
 | **Hooks** ||||
 | `guides/hooks/useProduct.md` | 🟠 HIGH | product data, PDP, product info, product context | Product information |
 | `guides/hooks/useOrderForm.md` | 🟠 HIGH | cart, order, checkout, add to cart | Cart management |

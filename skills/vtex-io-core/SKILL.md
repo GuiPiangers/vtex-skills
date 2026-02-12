@@ -60,7 +60,6 @@ Agent reasoning:
 | `guides/hooks/useProduct.md` | 🟠 HIGH | product data, PDP, product info, product context | Product information |
 | `guides/hooks/useOrderForm.md` | 🟠 HIGH | cart, order, checkout, add to cart | Cart management |
 | `guides/hooks/useRuntime.md` | 🟡 MEDIUM | route, navigation, query params, runtime | Runtime context |
-| `guides/hooks/custom-hooks.md` | 🟡 MEDIUM | create hook, custom hook, shared logic | Build custom hooks |
 | **Backend** ||||
 | `guides/backend/clients.md` | 🔴 **CRITICAL** | API call, HTTP request, external API, fetch | HTTP clients |
 | `guides/backend/graphql.md` | 🟠 HIGH | GraphQL, query, mutation, schema | GraphQL integration |

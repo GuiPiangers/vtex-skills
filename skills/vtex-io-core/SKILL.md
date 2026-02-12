@@ -62,8 +62,8 @@ Agent reasoning:
 | `guides/contexts/useRuntime.md` | 🟡 MEDIUM | route, navigation, query params, runtime | Runtime context |
 | **Backend** ||||
 | `guides/backend/services-api.md` | 🟡 **CRITICAL** | services, route handler, middleware, validation, API | Request handling |
-| `guides/backend/clients.md` | 🔴 **CRITICAL** | API call, HTTP request, external API, fetch | HTTP clients |
-| `guides/backend/graphql.md` | 🟠 HIGH | GraphQL, query, mutation, schema | GraphQL integration |
+| `guides/backend/clients.md` | 🔴 **CRITICAL** | API call, HTTP request, external API, fetch, clients | HTTP clients |
+| `guides/backend/masterdata.md` | 🟠 HIGH | masterdata | Masterdata integration |
 
 
 ---

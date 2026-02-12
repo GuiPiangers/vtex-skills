@@ -1,257 +1,282 @@
-# Flex Layout Guide (VTEX IO)
+# Flex Layout Guide
 
-> **Component:** `flex-layout.row` / `flex-layout.col`
-> **Domain:** Layout System
-> **Purpose:** Structural layout composition using flexbox semantics in VTEX IO
-> **Nature:** Architectural block (never business logic)
-
----
-
-# 🧱 Core Blocks
-
-## `flex-layout.row`
-
-* Horizontal container (flex-direction: row)
-* Top-level layout unit
-* Always the **root element** in a flex layout
-
-## `flex-layout.col`
-
-* Vertical container (flex-direction: column)
-* Child unit
-* Used only inside rows
+> **Blocks:** `flex-layout.row` / `flex-layout.col`  
+> **Purpose:** Flexbox-based structural layout system  
+> **Rule:** Structure only — never business logic
 
 ---
 
-# ⚠️ Structural Rules (MANDATORY)
+## 🧱 BLOCK TYPES
 
-```txt
-1. A layout ALWAYS starts with a row
-2. You can only place col inside row
-3. You can only place row inside col
-4. Structure must alternate: row → col → row → col
-5. Never use flex-layout as a first-level block
-6. Never break alternation
+### `flex-layout.row`
+- Horizontal container (`flex-direction: row`)
+- Must be the root of any flex layout
+- Contains `flex-layout.col` children
+
+### `flex-layout.col`
+- Vertical container (`flex-direction: column`)
+- Must be inside `flex-layout.row`
+- Can contain another `flex-layout.row`
+
+---
+
+## 🏗️ STRUCTURE RULES (MANDATORY)
+
+```
+1. Always start with row
+2. Only col goes inside row
+3. Only row goes inside col
+4. Always alternate: row → col → row → col
+5. Never break alternation
+```
+
+### Valid Pattern
+
+```json
+{
+  "flex-layout.row#main": {
+    "children": [
+      "flex-layout.col#left",
+      "flex-layout.col#right"
+    ]
+  },
+  
+  "flex-layout.col#left": {
+    "children": [
+      "flex-layout.row#nested"
+    ]
+  }
+}
 ```
 
 ---
 
-# 🧬 Rendering Model (REAL DOM STRUCTURE)
-
-`flex-layout.row` always renders:
-
-```
-.vtex-flex-layout-0-x-flexRow
-└── .vtex-store-components-3-x-container
-    └── .flexRowContent
-        └── .items-stretch   (one for each child col)
-```
-
-### Key Insight
-
-> `items-stretch` is the **true layout cell**.
-
-You are not controlling the col directly — you are controlling the **container generated for it**.
-
----
-
-# 📐 Column Width Control (CRITICAL RULE)
+## 📐 COLUMN WIDTH CONTROL
 
 ### Default Behavior
-
-```txt
-colSizing = equal (default)
-→ All columns have the same width
-→ width on flex-layout.col is ignored
+```
+colSizing: "equal" (default)
+→ All columns same width
+→ width prop on col is IGNORED
 ```
 
-### Controlled Width Behavior
-
+### Custom Width
 ```json
-"flex-layout.row": {
-  "props": {
-    "colSizing": "auto"
+{
+  "flex-layout.row#main": {
+    "props": {
+      "colSizing": "auto"    // Required to enable width control
+    },
+    "children": [
+      "flex-layout.col#left",
+      "flex-layout.col#right"
+    ]
+  },
+  
+  "flex-layout.col#left": {
+    "props": {
+      "width": "30%"         // Now width works
+    }
+  },
+  
+  "flex-layout.col#right": {
+    "props": {
+      "width": "70%"
+    }
   }
 }
 ```
 
-Then:
-
-```json
-"flex-layout.col#left": {
-  "props": {
-    "width": "30%"
-  }
-}
-
-"flex-layout.col#right": {
-  "props": {
-    "width": "70%"
-  }
-}
-```
-
-### Rule
-
-> ❗ To control column width:
->
-> * `colSizing: auto` on `flex-layout.row`
-> * define `width` on `flex-layout.col` only if it's needed for the component, otherwise don't use this prop to keep de default value ("width": "auto")
+**Critical:** `colSizing: "auto"` on row enables `width` on cols.
 
 ---
 
-# ✅ Default Architecture Rules
+## ⚙️ ESSENTIAL PROPS
 
-Always apply unless there is a **clear reason not to**:
+### On `flex-layout.row`
 
-```txt
-✔ colSizing: auto
-✔ preserveLayoutOnMobile: true
-✔ fullWidth: true
+| Prop | Default | Recommended | Why |
+|------|---------|-------------|-----|
+| `colSizing` | `"equal"` | `"auto"` | Enable column width control |
+| `preserveLayoutOnMobile` | `false` | `true` | Keep structure on mobile (don't stack) |
+| `fullWidth` | `false` | `true` | Remove unwanted container padding |
+
+### Standard Configuration
+
+```json
+{
+  "flex-layout.row#main": {
+    "props": {
+      "colSizing": "auto",
+      "preserveLayoutOnMobile": true,
+      "fullWidth": true
+    }
+  }
+}
 ```
 
-### Why
-
-| Prop                   | Reason                            |
-| ---------------------- | --------------------------------- |
-| colSizing: auto        | Enables real layout control       |
-| preserveLayoutOnMobile | Prevents mobile column collapse   |
-| fullWidth              | Avoids unwanted container padding |
+**Apply these by default unless you have a specific reason not to.**
 
 ---
 
-# 📱 Mobile Behavior
+## 📱 MOBILE BEHAVIOR
 
 ### Default VTEX Behavior
-
-```txt
-Mobile → row breaks into column
+```
+Mobile → row converts to column (stacks vertically)
 ```
 
-### Correct Behavior
-
+### Prevent Stacking
 ```json
-"preserveLayoutOnMobile": true
-```
-
-### Rule
-
-> Layout architecture must not change between devices.
-> Only spacing and flow should adapt — not structure.
-
----
-
-# 🎯 Identification & Targeting
-
-### Rule
-
-> Always explicitly identify blocks.
-
-```json
-"flex-layout.row#product-main": {}
-"flex-layout.col#image-area": {}
-"flex-layout.col#info-area": {}
-```
-
-Never use anonymous layout blocks.
-
----
-
-# 🎨 Styling Strategy
-
-## ❌ Forbidden
-
-```txt
-- Styling via props
-- Layout tuning via padding/margin props
-- Visual spacing via colGap/rowGap
-```
-
-## ✅ Correct
-
-```txt
-- Styling via CSS
-- Layout spacing via CSS
-- Visual control via CSS
-```
-
-### Rule
-
-> Props define structure.
-> CSS defines appearance.
-
----
-
-# 🧱 Composition Pattern
-
-### Standard Pattern
-
-```
-row
-└── col
-    └── row
-        └── col
-```
-
-Example:
-
-```json
-"flex-layout.row#pdp-main": {
+{
   "props": {
-    "colSizing": "auto",
-    "preserveLayoutOnMobile": true,
-    "fullWidth": true
-  },
-  "children": [
-    "flex-layout.col#left",
-    "flex-layout.col#right"
-  ]
+    "preserveLayoutOnMobile": true
+  }
 }
 ```
 
+**Rule:** Layout structure should not change between devices — only spacing/sizing should adapt.
+
 ---
 
-# 🚫 Anti-Patterns
+## 🎯 NAMING & IDENTIFICATION
 
-```txt
-✘ Deep nesting without purpose
-✘ Visual layout via props
-✘ colSizing: equal by default
-✘ Anonymous rows/cols
-✘ Mobile layout breaking
-✘ Using flex-layout as design tool
-✘ Layout mixed with business logic
-✘ God-layout structures
+### Always use semantic identifiers
+
+```json
+// ✅ Good
+"flex-layout.row#product-main"
+"flex-layout.col#image-area"
+"flex-layout.col#info-area"
+
+// ❌ Bad
+"flex-layout.row"
+"flex-layout.col"
 ```
 
-# 🧩 CSS Handles
+**Never use anonymous blocks.**
 
-```txt
+---
+
+## 🎨 STYLING
+
+### ❌ Don't Style via Props
+
+```json
+// Wrong
+{
+  "props": {
+    "marginTop": 5,
+    "paddingLeft": 10,
+    "colGap": 3
+  }
+}
+```
+
+### ✅ Style via CSS
+
+```css
+/* In your CSS file or another app */
+.vtex-flex-layout-0-x-flexRow--product-main {
+  margin-top: 2rem;
+  gap: 1rem;
+}
+```
+
+**Rule:** Props = structure. CSS = appearance.
+
+---
+
+## 🧬 DOM STRUCTURE (How it Renders)
+
+`flex-layout.row` generates:
+
+```html
+<div class="vtex-flex-layout-0-x-flexRow flexRow--product-main">
+  <div class="vtex-store-components-3-x-container">
+    <div class="flexRowContent">
+      <div class="flexRowContent--product-main stretchChildrenWidth items-stretch">
+        <!-- Your col content here -->
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+**Key insight:** `items-stretch` is the actual layout cell wrapper around each col.
+
+---
+
+## 🧩 CSS HANDLES
+
+Available handles:
+```
 flexRow
 flexRowContent
 flexCol
 flexColChild
 ```
 
----
-
-# 📚 Official References
-
-* [https://developers.vtex.com/docs/apps/vtex-flex-layout](https://developers.vtex.com/docs/apps/vtex-flex-layout)
-* [https://developers.vtex.com/docs/guides/store-framework](https://developers.vtex.com/docs/guides/store-framework)
-
----
-
-# 🧠 Operational Rules Summary
-
-```txt
-1. Always start with row
-2. Always alternate row/col
-3. Always use colSizing: auto
-4. Always use preserveLayoutOnMobile: true
-5. Always use fullWidth: true
-6. Always identify blocks
-7. Always style via CSS
+**Usage:**
+```css
+.vtex-flex-layout-0-x-flexRow--product-main { }
+.vtex-flex-layout-0-x-flexCol--image-area { }
 ```
+
+---
+
+## 🚫 ANTI-PATTERNS
+
+```
+❌ Breaking row/col alternation
+❌ Anonymous layout blocks
+❌ Styling via props
+❌ Deep nesting without purpose
+❌ Mixing layout with business logic
+❌ Using colSizing: "equal" or not specifying it when you don't want equal columns
+❌ Not using preserveLayoutOnMobile
+```
+
+---
+
+## 📋 QUICK REFERENCE
+
+### Minimal Working Example
+
+```json
+{
+  "flex-layout.row#main": {
+    "props": {
+      "colSizing": "auto",
+      "preserveLayoutOnMobile": true,
+      "fullWidth": true
+    },
+    "children": [
+      "flex-layout.col#left",
+      "flex-layout.col#right"
+    ]
+  },
+  
+  "flex-layout.col#left": {
+    "props": {
+      "width": "40%"
+    },
+    "children": ["image-block"]
+  },
+  
+  "flex-layout.col#right": {
+    "props": {
+      "width": "60%"
+    },
+    "children": ["content-block"]
+  }
+}
+```
+
+---
+
+## 📚 OFFICIAL DOCS
+
+- https://developers.vtex.com/docs/apps/vtex-flex-layout
 
 ---

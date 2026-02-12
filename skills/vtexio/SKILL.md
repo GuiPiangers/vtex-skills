@@ -4,132 +4,185 @@ description: Central VTEX IO knowledge system. Defines architectural standards, 
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 
-# VTEX IO CORE SKILL SYSTEM
+# VTEX IO CORE SKILL
 
-> **Philosophy:** VTEX IO is not about blocks — it's about architecture, behavior, and consistency.  
-> **Core Principle:** Standardize thinking, not just implementation.
-
----
-
-# 🎯 Selective Reading Rule (MANDATORY)
-
-**Load only the guides required for the current task. Never load everything.**
+> Operational intelligence for VTEX IO Store Framework development
 
 ---
 
-## Visão Geral do Storefront VTEX IO
+## 🎯 OPERATIONAL PROTOCOL
 
-O VTEX IO é um ecossistema de desenvolvimento baseado em **apps**, **blocos declarativos**, **interfaces JSON** e **composição de componentes**. Todo o storefront é construído de forma declarativa, orientada a configuração e composição.
+```
+1. Identify task domain (use Domain Classification table)
+2. Match keywords to Guide Index triggers
+3. Load guide(s) by priority (🔴 → 🟠 → 🟡)
+4. Apply patterns from guide
+5. Never load all guides - load on-demand only
+```
 
----
+**Priority Loading Order:**
+- 🔴 **CRITICAL** - Core architectural patterns (load first)
+- 🟠 **HIGH** - Common features (load when needed)
+- 🟡 **MEDIUM** - Specific implementations (load for specialized tasks)
 
+**Example Workflow:**
+```
+User: "Create a product grid with custom styling"
 
-# 🧭 Função do SKILL.md
-
-Este arquivo serve como:
-
-* Índice semântico
-* Mapa cognitivo
-* Guia arquitetural
-* Base de treinamento dos agentes
-* Sistema de referência
-
----
-
-Seção base criada para expansão futura:
-
-* Layout System
-* Store Components
-* PDP
-* Shelf
-* Hooks
-* Backend
-* Integrações
-
----
-
-# 🧱 Estrutura Declarativa do Storefront
-
-## Blocos (Blocks)
-
-Blocos são as unidades básicas de construção da interface.
-
-Eles são declarados em arquivos `.json` e representam componentes visuais ou estruturais.
-
-### Estrutura básica de um bloco:
-
-```json
-{
-  "store.home": {
-    "blocks": ["flex-layout.row#main"]
-  },
-
-  "flex-layout.row#main": {
-    "children": [
-      "flex-layout.col#left",
-      "flex-layout.col#right"
-    ],
-    "props": {
-      "fullWidth": true,
-      "preserveLayoutOnMobile": true
-    }
-  }
-}
+Agent reasoning:
+1. Domain: Layout + Components
+2. Triggers match: "grid", "layout", "custom"
+3. Priority loads:
+   - guides/layout/flex-layout.md (🔴 CRITICAL)
+   - guides/components/product-summary.md (🟠 HIGH)
+4. Apply patterns from loaded guides
 ```
 
 ---
 
-## Propriedades Fundamentais
+## 📂 GUIDE INDEX
 
-### `props`
-
-Configura o comportamento e estilo do bloco.
-
-### `title`
-
-Usado para identificação semântica no Site Editor.
-
-
-# 🧩 Construção de Componentes
-
-## Componentes Nativos
-
-São fornecidos pelos apps oficiais da VTEX:
-
-* vtex.store-components
-* vtex.flex-layout
-* vtex.store
-* vtex.product-summary
-
-## Componentes Customizados (React)
-
-Fluxo:
-
-1. Criação do componente React
-2. Registro no `interfaces.json`
-3. Exposição no `manifest.json`
-4. Uso declarativo via JSON
+| Guide | Priority | Triggers | Purpose |
+|-------|----------|----------|---------|
+| **Layout** ||||
+| `guides/layout/flex-layout.md` | 🔴 **CRITICAL** | grid, row, col, layout, structure, flexbox | Flexbox layout system |
+| `guides/layout/responsive-layout.md` | 🟡 MEDIUM | mobile, responsive, breakpoint, device | Responsive patterns |
+| `guides/layout/stack-layout.md` | 🟡 MEDIUM | stack, overlay, z-index, layer | Layered content |
+| **Components** ||||
+| `guides/components/custom-components.md` | 🔴 **CRITICAL** | create block, custom component, new block, React | Build custom blocks |
+| `guides/components/product-summary.md` | 🟠 HIGH | product card, shelf, product list, showcase | Product displays |
+| `guides/components/search-result.md` | 🟠 HIGH | search page, filter, category, listing | Search & filters |
+| `guides/components/menu.md` | 🟡 MEDIUM | navigation, menu, header, navbar | Navigation menus |
+| `guides/components/minicart.md` | 🟡 MEDIUM | cart icon, minicart, cart preview | Cart widget |
+| **Hooks** ||||
+| `guides/hooks/useProduct.md` | 🟠 HIGH | product data, PDP, product info, product context | Product information |
+| `guides/hooks/useOrderForm.md` | 🟠 HIGH | cart, order, checkout, add to cart | Cart management |
+| `guides/hooks/useRuntime.md` | 🟡 MEDIUM | route, navigation, query params, runtime | Runtime context |
+| `guides/hooks/custom-hooks.md` | 🟡 MEDIUM | create hook, custom hook, shared logic | Build custom hooks |
+| **Backend** ||||
+| `guides/backend/clients.md` | 🔴 **CRITICAL** | API call, HTTP request, external API, fetch | HTTP clients |
+| `guides/backend/graphql.md` | 🟠 HIGH | GraphQL, query, mutation, schema | GraphQL integration |
+| `guides/backend/middlewares.md` | 🟡 MEDIUM | route handler, middleware, validation | Request handling |
+| `guides/backend/resolvers.md` | 🟡 MEDIUM | resolver, GraphQL resolver, data source | GraphQL resolvers |
 
 ---
 
-# 📦 manifest.json
+## 🎯 LOADING PROTOCOL
 
-O `manifest.json` define o app VTEX IO.
+```
+1. Match keywords from task to "Triggers" column
+2. Load by priority if multiple matches (🔴 → 🟠 → 🟡)
+3. Load on-demand only - never preload all guides
+4. Start by identifying domain (layout/components/hooks/backend)
+```
 
-### Responsabilidades:
+### Loading Examples
 
-* Nome do app
-* Vendor
-* Versão
-* Dependências
-* Builders
-* Policies
+```
+Task: "Create a custom product badge component"
+→ Triggers: "create", "custom", "component"
+→ Loads: guides/components/custom-components.md (🔴 CRITICAL)
 
-### Exemplo:
+Task: "Build PDP with product info and add to cart button"
+→ Triggers: "product info", "add to cart"
+→ Loads: guides/hooks/useProduct.md (🟠), guides/hooks/useOrderForm.md (🟠)
+
+Task: "Create responsive grid layout for homepage"
+→ Triggers: "responsive", "grid", "layout"
+→ Loads: guides/layout/flex-layout.md (🔴), guides/layout/responsive-layout.md (🟡)
+
+Task: "Fetch data from external API in backend"
+→ Triggers: "API", "fetch", "backend"
+→ Loads: guides/backend/clients.md (🔴 CRITICAL)
+
+Task: "Add custom navigation menu"
+→ Triggers: "navigation", "menu"
+→ Loads: guides/components/menu.md (🟡)
+```
+
+---
+
+## 🧠 VTEX IO FUNDAMENTALS
+
+### Core Concept
+
+VTEX IO is a **declarative block composition system**, not traditional frontend.
+
+```
+You don't build pages.
+You compose block trees.
+```
+
+### Architecture Layers
+
+```
+JSON Blocks      → Structure (what)
+React Components → Behavior (how)
+CSS Handles      → Style (appearance)
+Node/GraphQL     → Data (backend)
+```
+
+---
+
+## 🧱 BLOCK SYSTEM
+
+### What is a Block?
+
+Declarative UI unit defined in JSON representing visual or structural components.
+
+### Block Declaration
 
 ```json
 {
-  "vendor": "minhaempresa",
+  "vendor.app.component#context": {
+    "props": {
+      "fullWidth": true
+    },
+    "children": [
+      "flex-layout.col#left",
+      "flex-layout.col#right"
+    ]
+  }
+}
+```
+
+### Naming Convention
+
+```
+vendor.app.component#semantic-context
+```
+
+**Examples:**
+- `store.home`
+- `flex-layout.row#header`
+- `product-summary.shelf#recommendations`
+
+---
+
+## 🏗️ FILE STRUCTURE
+
+```
+store-theme/
+├── manifest.json              # App definition
+├── store/
+│   ├── blocks/               # Block declarations (.json)
+│   │   ├── home.json
+│   │   ├── product.json
+│   │   └── search.json
+│   └── interfaces.json       # Block → React component mapping
+└── react/                    # Custom React components
+    └── components/
+```
+
+---
+
+## 📦 MANIFEST.JSON
+
+Defines the VTEX IO app.
+
+```json
+{
+  "vendor": "company",
   "name": "store-theme",
   "version": "1.0.0",
   "builders": {
@@ -138,220 +191,278 @@ O `manifest.json` define o app VTEX IO.
   },
   "dependencies": {
     "vtex.store": "2.x",
-    "vtex.flex-layout": "0.x"
+    "vtex.flex-layout": "0.x",
+    "vtex.store-components": "3.x"
+  }
+}
+```
+
+**Key sections:**
+- `vendor` + `name` = app identifier
+- `builders` = what this app can build
+- `dependencies` = installed VTEX apps
+
+---
+
+## 🧩 COMPONENT TYPES
+
+### Native Components
+
+Provided by official VTEX apps:
+- `vtex.store-components` (generic UI)
+- `vtex.flex-layout` (layout system)
+- `vtex.product-summary` (product displays)
+- `vtex.search-result` (search pages)
+- `vtex.menu` (navigation)
+
+### Custom Components
+
+**Flow:**
+1. Create React component in `/react`
+2. Register in `interfaces.json`
+3. Declare in `manifest.json`
+4. Use declaratively in JSON blocks
+
+**Guide:** `guides/components/custom-components.md`
+
+---
+
+## 🔗 COMPOSITION PATTERNS
+
+### `children` (Direct Composition)
+
+Renders blocks in sequence, like React children.
+
+```json
+{
+  "flex-layout.row#main": {
+    "children": [
+      "flex-layout.col#left",
+      "flex-layout.col#right"
+    ]
+  }
+}
+```
+
+**Mental model:** Fixed structure tree
+
+---
+
+### `blocks` (Extension Points)
+
+Dynamic injection via `<ExtensionPoint />`.
+
+```json
+{
+  "store.home": {
+    "blocks": [
+      "telemarketing-slot"
+    ]
+  }
+}
+```
+
+**Requires in React:**
+```tsx
+<ExtensionPoint id="telemarketing-slot" />
+```
+
+**Mental model:** Plugin slots
+
+---
+
+## 🚦 ARCHITECTURAL RULES
+
+### Hierarchy (MANDATORY)
+
+```
+1. Prefer native VTEX blocks
+2. Create custom React blocks only when necessary
+3. Never access APIs directly from components
+4. Always declare informative titles for blocks with custom props on site-editor
+
+```
+
+### Separation of Concerns (MANDATORY)
+
+```
+✓ JSON blocks = structure
+✓ React = behavior
+✓ CSS Handles = styling (cross-app)
+✓ Hooks = data/state
+✓ Clients = backend integration
+
+✗ Never mix layout with business logic
+✗ Never mix frontend with direct API calls
+✗ Never style CSS handles in same app that defines them
+✗ Never create "god components"
+```
+
+---
+
+## 🚀 QUICK DECISION TREE
+
+**What are you trying to do?**
+
+```
+📐 Building page layout / structure
+  → Load: guides/layout/flex-layout.md (🔴)
+
+🧩 Creating a new custom block
+  → Load: guides/components/custom-components.md (🔴)
+
+📦 Using native VTEX components
+  → Load: guides/components/{component}.md (🟠/🟡)
+
+📊 Need product/cart data in component
+  → Load: guides/hooks/useProduct.md or useOrderForm.md (🟠)
+
+🔌 Calling external APIs
+  → Load: guides/backend/clients.md (🔴)
+
+🔍 Building GraphQL integration
+  → Load: guides/backend/graphql.md (🟠)
+
+📱 Making layout responsive
+  → Load: guides/layout/responsive-layout.md (🟡)
+
+🎨 Styling components
+  → Reference: CSS Handles (cross-app styling)
+```
+
+---
+
+## 🎯 DOMAIN CLASSIFICATION
+
+Use this to identify which domain your task belongs to:
+
+| Task involves... | Domain | Guide Priority |
+|-----------------|--------|----------------|
+| Grid, rows, columns, page structure | **Layout** | Start with flex-layout.md (🔴) |
+| Creating new custom blocks with React | **Components** | Start with custom-components.md (🔴) |
+| Using/customizing native VTEX blocks | **Components** | Load specific component guide (🟠/🟡) |
+| Accessing product/cart/runtime data | **Hooks** | Load specific hook guide (🟠/🟡) |
+| Creating custom hooks | **Hooks** | Load custom-hooks.md (🟡) |
+| API calls, external services | **Backend** | Start with clients.md (🔴) |
+| GraphQL queries/mutations | **Backend** | Load graphql.md (🟠) |
+| Route handlers, validation | **Backend** | Load middlewares.md (🟡) |
+
+**Quick Domain Identification:**
+- Keywords: "layout", "grid", "row", "structure" → **Layout**
+- Keywords: "component", "block", "create", "custom" → **Components**
+- Keywords: "data", "fetch", "product", "cart", "hook" → **Hooks**
+- Keywords: "API", "backend", "GraphQL", "client" → **Backend**
+
+---
+
+## 📋 COMMON DEPENDENCIES
+
+```json
+{
+  "dependencies": {
+    "vtex.store": "2.x",              // Core store blocks
+    "vtex.flex-layout": "0.x",        // Layout system
+    "vtex.store-components": "3.x",   // Generic UI components
+    "vtex.product-summary": "2.x",    // Product cards/displays
+    "vtex.search-result": "3.x",      // Search & category pages
+    "vtex.menu": "2.x",               // Navigation menus
+    "vtex.minicart": "2.x"            // Shopping cart
   }
 }
 ```
 
 ---
 
-# ➕ Apps (Dependencies)
+## 🧬 RELATED SKILLS
 
-Apps são módulos instaláveis no VTEX IO.
+- **frontend-design** → UX/UI patterns
+- **software-architecture** → SOLID principles
+- **api-design** → GraphQL/REST patterns
 
-Eles são adicionados no `manifest.json` em `dependencies`.
+---
 
-Exemplo:
+## 📚 VALIDATION SOURCES
 
-```json
-"dependencies": {
-  "vtex.store": "2.x",
-  "vtex.flex-layout": "0.x",
-  "vtex.store-components": "3.x"
-}
+Official VTEX docs (for validation only, NOT primary source):
+- https://developers.vtex.com/docs/guides/store-framework
+- https://developers.vtex.com/docs/apps/
+
+---
+
+## ⚡ QUICK START WORKFLOW
+
+```
+User asks VTEX IO task
+↓
+Use Quick Decision Tree or Domain Classification
+↓
+Match keywords to Guide Index triggers
+↓
+Load guide(s) by priority (🔴 → 🟠 → 🟡)
+↓
+Apply patterns from guide
+↓
+Validate if needed
+```
+
+**Real Examples:**
+
+```
+Task: "Create homepage banner component"
+→ Domain: Components (custom block creation)
+→ Trigger match: "create", "component"
+→ Load: guides/components/custom-components.md (🔴)
+
+Task: "Build product listing with filters"
+→ Domain: Components
+→ Trigger match: "product", "listing", "filter"
+→ Load: guides/components/search-result.md (🟠)
+
+Task: "Fetch order history from API"
+→ Domain: Backend
+→ Trigger match: "fetch", "API"
+→ Load: guides/backend/clients.md (🔴)
 ```
 
 ---
 
-# 🧠 Modelo Mental
+## ✅ VTEX IO CHECKLIST
 
-VTEX IO não é frontend tradicional.
+**Before deploying to production:**
 
-É um **sistema declarativo de composição de blocos**.
+### Critical (Must Fix):
+- [ ] No waterfalls in data fetching (parallel fetch where possible)
+- [ ] Custom components exported as default
+- [ ] CSS Handles defined for all custom components
+- [ ] No direct API calls from React components
+- [ ] All blocks have semantic identifiers (`#context`)
 
-Você não constrói telas.
+### High Priority:
+- [ ] interfaces.json properly maps all custom blocks
+- [ ] Schema added for Site Editor support (when needed)
+- [ ] Data fetched via hooks (not direct API calls)
+- [ ] No inline styles (use CSS handles)
 
-Você constrói **árvores de blocos**.
+### Medium Priority:
+- [ ] No anonymous blocks
+- [ ] TypeScript interfaces defined for props
+- [ ] Backend clients properly configured
+- [ ] GraphQL queries optimized (no N+1)
 
----
-
-## 🧱 Layout System (Store Framework)
-
-| Guide | Status | When to Read |
-|------|--------|--------------|
-| [layout/flex-layout.md](guides/layout/flex-layout.md) | 🔴 REQUIRED | Any grid/row/col layout |
-| [layout/slider-layout.md](guides/layout/slider-layout.md) | 🔴 REQUIRED | Carousels / sliders |
-| [layout/store-blocks.md](guides/layout/store-blocks.md) | 🔴 REQUIRED | store-block usage |
-| [layout/container-patterns.md](guides/layout/container-patterns.md) | ⚪ Optional | Structural patterns |
-| [layout/responsive-system.md](guides/layout/responsive-system.md) | ⚪ Optional | Breakpoints/responsiveness |
-
----
-
-## 🧩 Store Components (Granular Blocks)
-
-| Block | Guide | Docs |
-|------|------|------|
-| Product Price | guides/store-components/product-price.md | vtex.store-components |
-| SKU Selector | guides/store-components/sku-selector.md | vtex.store-components |
-| Buy Button | guides/store-components/buy-button.md | vtex.store-components |
-| Product Name | guides/store-components/product-name.md | vtex.store-components |
-| Product Image | guides/store-components/product-image.md | vtex.store-components |
-| Breadcrumb | guides/store-components/breadcrumb.md | vtex.store-components |
-| Minicart | guides/store-components/minicart.md | vtex.minicart |
-| Search Result | guides/store-components/search-result.md | vtex.search-result |
-| Filters | guides/store-components/filters.md | vtex.search-result |
-
-**Docs base:**
-- https://developers.vtex.com/docs/apps/vtex.store-components  
-- https://developers.vtex.com/docs/apps/vtex.search-result  
-- https://developers.vtex.com/docs/apps/vtex.minicart  
+### Styling Rules:
+- [ ] CSS Handles styled from different app (cross-app styling)
+- [ ] No styling via props
+- [ ] Semantic CSS handle names
 
 ---
 
-## 🛒 Shelf / Vitrine System
+## 🔴 CRITICAL REMINDERS
 
-| Guide | Status | Scope |
-|------|--------|-------|
-| [shelf/product-summary.md](guides/shelf/product-summary.md) | 🔴 REQUIRED | Base summary |
-| [shelf/product-summary-shelf.md](guides/shelf/product-summary-shelf.md) | 🔴 REQUIRED | Shelf rendering |
-| [shelf/product-summary-list.md](guides/shelf/product-summary-list.md) | ⚪ Optional | List view |
-| [shelf/shelf-composition.md](guides/shelf/shelf-composition.md) | 🔴 REQUIRED | Vitrine architecture |
-| [shelf/shelf-patterns.md](guides/shelf/shelf-patterns.md) | ⚪ Optional | UX patterns |
-
-**Docs:**
-- https://developers.vtex.com/docs/apps/vtex.product-summary  
-- https://developers.vtex.com/docs/apps/vtex.shelf  
+1. **Load guides on-demand** — never preload everything
+2. **VTEX IO is declarative** — compose blocks, don't build pages
+3. **Separation is mandatory** — structure/behavior/style/data are isolated
+4. **Native first** — prefer VTEX blocks over custom code
+5. **Cross-app styling** — CSS handles work across apps, not within same app
+6. **Semantic identifiers** — all blocks must have `#context`
 
 ---
-
-## 🧾 PDP System
-
-| Guide | Status | Scope |
-|------|--------|-------|
-| [pdp/pdp-architecture.md](guides/pdp/pdp-architecture.md) | 🔴 REQUIRED | PDP structure |
-| [pdp/sku-logic.md](guides/pdp/sku-logic.md) | 🔴 REQUIRED | SKU handling |
-| [pdp/seller-logic.md](guides/pdp/seller-logic.md) | 🔴 REQUIRED | Seller rules |
-| [pdp/availability.md](guides/pdp/availability.md) | ⚪ Optional | Stock rules |
-| [pdp/pricing-logic.md](guides/pdp/pricing-logic.md) | 🔴 REQUIRED | Price logic |
-| [pdp/pdp-layout.md](guides/pdp/pdp-layout.md) | 🔴 REQUIRED | Layout composition |
-
-**Docs:**
-- https://developers.vtex.com/docs/guides/product-detail-page  
-- https://developers.vtex.com/docs/apps/vtex.product-context  
-
----
-
-# ⚛️ React Custom System
-
-| Guide | Status | Scope |
-|------|--------|-------|
-| [react/custom-components.md](guides/react/custom-components.md) | 🔴 REQUIRED | Custom blocks |
-| [react/render-runtime.md](guides/react/render-runtime.md) | 🔴 REQUIRED | VTEX runtime |
-| [react/css-handles.md](guides/react/css-handles.md) | 🔴 REQUIRED | Styling system |
-| [react/blockclass-strategy.md](guides/react/blockclass-strategy.md) | 🔴 REQUIRED | blockClass |
-| [react/props-mapping.md](guides/react/props-mapping.md) | 🔴 REQUIRED | JSON schema mapping |
-| [react/composition.md](guides/react/composition.md) | ⚪ Optional | Advanced composition |
-
-**Docs:**
-- https://developers.vtex.com/docs/guides/vtex-io-documentation-developing-custom-apps  
-- https://developers.vtex.com/docs/guides/render-runtime  
-
----
-
-# 🪝 Hooks System
-
-| Hook | Guide | Docs |
-|------|------|------|
-| useProduct | guides/hooks/useProduct.md | vtex.product-context |
-| useOrderForm | guides/hooks/useOrderForm.md | vtex.order-manager |
-| useRuntime | guides/hooks/useRuntime.md | vtex.render-runtime |
-| useCssHandles | guides/hooks/useCssHandles.md | vtex.css-handles |
-| Custom Hooks | guides/hooks/custom-hooks.md | internal patterns |
-
----
-
-# 🧠 Backend VTEX IO System
-
-## Architecture
-- [backend/architecture.md](guides/backend/architecture.md)
-- [backend/service-json.md](guides/backend/service-json.md)
-- [backend/context.md](guides/backend/context.md)
-
-## HTTP Layer
-- [backend/routes.md](guides/backend/routes.md)
-- [backend/middlewares.md](guides/backend/middlewares.md)
-- [backend/error-handling.md](guides/backend/error-handling.md)
-
-## Clients
-- [backend/clients.md](guides/backend/clients.md)
-- [backend/auth.md](guides/backend/auth.md)
-- [backend/retries.md](guides/backend/retries.md)
-- [backend/timeouts.md](guides/backend/timeouts.md)
-
-## Observability
-- [backend/logging.md](guides/backend/logging.md)
-- [backend/metrics.md](guides/backend/metrics.md)
-- [backend/tracing.md](guides/backend/tracing.md)
-
-**Docs:**
-- https://developers.vtex.com/docs/guides/vtex-io-documentation-developing-backend-apps  
-- https://developers.vtex.com/docs/guides/vtex-io-documentation-routing  
-- https://developers.vtex.com/docs/guides/vtex-io-documentation-using-clients  
-
----
-
-# 🔗 Integration System
-
-| Guide | Scope |
-|------|-------|
-| [integration/external-apis.md](guides/integration/external-apis.md) | APIs externas |
-| [integration/webhooks.md](guides/integration/webhooks.md) | Webhooks |
-| [integration/auth.md](guides/integration/auth.md) | Auth flows |
-| [integration/retries.md](guides/integration/retries.md) | Resilience |
-| [integration/fallback.md](guides/integration/fallback.md) | Failover |
-| [integration/error-strategy.md](guides/integration/error-strategy.md) | Error handling |
-
----
-
-# 🚦 Decision Rules
-
-1. **Prefer native blocks**
-2. **Extend with custom React only when necessary**
-3. **Encapsulate logic in hooks**
-4. **Encapsulate I/O in clients**
-5. **Never mix layout with business logic**
-6. **Never mix frontend logic with backend integration**
-7. **Never access APIs directly from components**
-8. **Never centralize multiple responsibilities in one block**
-9. **Never create “god components”**
-10. **Always isolate domain responsibility**
-
----
-
-# 🧠 Behavior Over Documentation Rule
-
-> Documentation tells *what VTEX allows*.  
-> This system defines *how your architecture must behave*.
-
----
-
-# 🧬 Related Skills
-
-| Skill | Purpose |
-|------|--------|
-| **vtex-io-core** | VTEX IO architecture |
-| **frontend-design** | UX/UI thinking |
-| **web-design-guidelines** | Accessibility & performance |
-| **software-architecture** | SOLID & Clean Architecture |
-| **api-design** | API design patterns |
-
----
-
-## 🧠 Operational Rule
-
-If task = VTEX:
-→ Load vtex-io-core
-→ Load only the micro-guides needed
-→ Apply patterns
-→ Follow internal rules
-→ Use VTEX docs only as validation

@@ -199,7 +199,7 @@ const MyComponent = () => {
 
 ---
 
-## 🧩 COMPOSITION: children vs blocks
+## 🧩 COMPOSITION:
 
 ### `children` - Direct Composition
 
@@ -228,7 +228,7 @@ Fixed structure, renders blocks directly.
 
 ---
 
-### `blocks` - Extension Points
+### `slots` - Extension Points
 
 Dynamic injection via `<ExtensionPoint />`.
 
@@ -240,7 +240,7 @@ const MyComponent = () => {
   return (
     <div>
       <h1>Header</h1>
-      <ExtensionPoint id="custom-slot" />
+      <ExtensionPoint id="custom-block" />
     </div>
   )
 }
@@ -250,8 +250,8 @@ const MyComponent = () => {
 ```json
 {
   "store.home": {
-    "blocks": [
-      "custom-slot"
+    "children": [
+      "custom-block"
     ]
   },
   

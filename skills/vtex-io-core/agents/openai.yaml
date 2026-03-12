@@ -1,0 +1,4 @@
+interface:
+  display_name: "VTEX IO Core"
+  short_description: "Core VTEX IO workflow and implementation guide"
+  default_prompt: "Use $vtex-io-core to implement this VTEX IO task with minimal, production-safe edits. Use $vtex-io-test to test the changes"

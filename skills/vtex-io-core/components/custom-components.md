@@ -10,7 +10,7 @@
 A VTEX IO custom component consists of:
 
 1. **manifest.json** - App definition
-2. **interfaces.json** - Block declaration
+2. **store/interfaces.json** - Block declaration
 3. **React component** - Implementation (`/react`)
 4. **Schema** - Site Editor config (optional)
 5. **CSS Handles** - Styling hooks
@@ -22,12 +22,12 @@ A VTEX IO custom component consists of:
 ```
 my-app/
 ├── manifest.json
-├── interfaces.json
 ├── react/
 │   ├── MyComponent.tsx      # Must export default
 │   └── components/
 │       └── OtherComponent.tsx
 └── store/
+    ├── interfaces.json      # Block declarations live here, inside /store
     └── blocks.json
 ```
 
@@ -35,7 +35,7 @@ my-app/
 
 ## 🔧 SETUP STEPS
 
-### 1. Define Block in `interfaces.json`
+### 1. Define Block in `store/interfaces.json`
 
 ```json
 {
@@ -46,6 +46,7 @@ my-app/
 ```
 
 **Rules:**
+- File lives inside `/store/interfaces.json`, not in the root
 - Key = block name used in JSON (`my-app.my-component`)
 - `component` = React component file name in `/react`
 - Component must be **default export**
@@ -197,13 +198,26 @@ const MyComponent = () => {
 
 **Rule:** Component defines structure. Another app defines style.
 
+> **Tip:** Prefer Tachyons utility classes for simple layout and spacing needs, as they are already available in Store Framework without requiring cross-app styling.
+
 ---
 
 ## 🧩 COMPOSITION:
 
 ### `children` - Direct Composition
 
-Fixed structure, renders blocks directly.
+**In `store/interfaces.json`:**
+
+```json
+{
+  "my-component": {
+    "component": "MyComponent",
+    "composition": "children"
+  }
+}
+```
+
+Renders blocks directly, in same declaration order.
 
 ```json
 {
@@ -216,20 +230,20 @@ Fixed structure, renders blocks directly.
 }
 ```
 
-**Equivalent to:**
+**In React custom component:**
 ```tsx
-<MyComponent>
-  <Header />
-  <Content />
-</MyComponent>
+import React, { PropsWithChildren } from 'react'
+
+const MyComponent: React.FC<PropsWithChildren<Props>> = ({ children }) => (
+  <div>{children}</div> // renders flex-layout.row#header and flex-layout.row#content in declaration order
+)
 ```
 
-**Use for:** Layout, fixed structure, visual hierarchy
+**Use for:** Layout, children composition
 
 ---
 
-### `slots` - Extension Points
-
+### `Blocks`
 Dynamic injection via `<ExtensionPoint />`.
 
 **In React:**
@@ -240,39 +254,110 @@ const MyComponent = () => {
   return (
     <div>
       <h1>Header</h1>
-      <ExtensionPoint id="custom-block" />
+      <ExtensionPoint 
+        id="custom-block"
+        {...props} // You can pass props to the injected component. If the component has schema declared, the user can overwrite these props in Site Editor
+      />
     </div>
   )
 }
 ```
 
-**In JSON:**
+**In `store/interfaces.json`:**
 ```json
 {
-  "store.home": {
-    "children": [
+  "my-component": {
+    "component": "MyComponent",
+    "composition": "blocks",
+    "allowed": ["custom-block"]
+  },
+  "custom-block": {}
+}
+```
+
+**In store JSON:**
+```json
+{
+  "my-component": {
+    "blocks": [
       "custom-block"
     ]
   },
-  
-  "custom-slot": {
-    "children": ["banner", "shelf"]
+  "custom-block": {}
+}
+```
+
+**Use for:** Plugin system
+
+---
+
+### `Slots`
+Dynamic injection via props.
+
+**In React:**
+```tsx
+import React, { ReactElement } from 'react'
+
+interface Props {
+  CustomComponent: ReactElement
+}
+
+const MyComponent = ({ CustomComponent }: Props) => {
+  return (
+    <div>
+      <h1>Header</h1>
+      <CustomComponent 
+        {...props} // You can pass props to the injected component. If the component has schema declared, the user can overwrite these props in Site Editor
+      />
+    </div>
+  )
+}
+```
+
+**In `store/interfaces.json`:**
+```json
+{
+  "my-component": {
+    "component": "MyComponent"
   }
 }
 ```
 
-**Use for:** Plugin system, dynamic content, extensibility
+**In store JSON:**
+```json
+{
+  "my-component": {
+    "props": {
+      "CustomComponent": "any-component"
+    }
+  }
+}
+```
+
+**Rules**: 
+
+- Slot props **must** be declared in PascalCase: `CustomComponent` ✅ — `custom_component` ❌
+- Slot props **cannot** be nested inside other objects:
+  - ✅ `"props": { "CustomComponent": "any-component" }`
+  - ❌ `"props": { "nested": { "CustomComponent": "any-component" } }`
+- No need to declare `allowed` in `interfaces.json` — any block from any app can be passed as a slot
+
+**Use for:** Plugin system, dynamic content
 
 ---
 
 ## 📋 COMPARISON TABLE
 
-| Feature | `children` | `blocks` |
-|---------|-----------|----------|
-| **Mechanism** | Direct render | ExtensionPoint injection |
-| **Structure** | Fixed | Dynamic |
-| **Use case** | Layout hierarchy | Plugin slots |
-| **Requires** | Nothing | `<ExtensionPoint />` in React |
+| Feature | `children` | `blocks` | `slots` |
+|---------|-----------|----------|---------|
+| **Mechanism** | Direct render | ExtensionPoint injection | Props injection |
+| **Structure** | Fixed | Dynamic | Dynamic |
+| **Use case** | Layout hierarchy | Plugin System | Plugin System |
+| **Requires** | `PropsWithChildren` in React | `<ExtensionPoint />` in React, `allowed` in `interfaces.json`, dependencies in `manifest.json` | Nothing extra |
+
+---
+
+**Prefer Slots over Blocks** — simpler and more flexible. Use `children` for fixed layout hierarchy.
 
 ---
 
@@ -327,11 +412,13 @@ const MyComponent = () => {
 ```
 ✓ Use TypeScript for Props interface
 ✓ Use CSS Handles for all styling
+✓ Prefer Tachyons for simple layout/spacing
 ✓ Add Schema for Site Editor support
 ✓ Use semantic block naming
 ✓ Separate concerns (structure/behavior/style)
 ✓ Use hooks for data fetching
 ✓ Export component as default
+✓ Use PropsWithChildren when using children composition
 ```
 
 ---
@@ -346,13 +433,15 @@ const MyComponent = () => {
 ❌ God components (too many responsibilities)
 ❌ Anonymous blocks (no #context)
 ❌ Missing default export
+❌ Lowercase slot prop names (use PascalCase)
+❌ Nested slot props inside objects
 ```
 
 ---
 
 ## 📋 COMPLETE EXAMPLE
 
-### interfaces.json
+### store/interfaces.json
 ```json
 {
   "store.product-badge": {
@@ -449,12 +538,12 @@ export default ProductBadge
 ## 🧠 MENTAL MODEL
 
 ```
-interfaces.json    → Declares block exists
-React component    → Implements behavior
-Schema             → Enables admin config
-CSS Handles        → Provides style hooks
-JSON blocks        → Uses block in storefront
-Another app CSS    → Applies visual style
+store/interfaces.json  → Declares block exists (lives inside /store, not root)
+React component        → Implements behavior
+Schema                 → Enables admin config
+CSS Handles            → Provides style hooks (styled from another app)
+JSON blocks            → Uses block in storefront
+Another app CSS        → Applies visual style
 ```
 
 ---

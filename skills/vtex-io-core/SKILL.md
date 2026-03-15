@@ -51,6 +51,62 @@ Agent reasoning:
 | `skills/vtex-io-core/components/custom-components.md` | 🔴 **CRITICAL** | create block, custom component, new block, React | Build custom blocks |
 | `skills/vtex-io-core/components/product-summary.md` | 🟠 HIGH | product card, shelf, product list, showcase | Product displays |
 | `skills/vtex-io-core/components/product-prices.md` | 🟠 HIGH | product prices, shelf, product price | Product prices display |
+| **Components (Official Docs, Scraped)** ||||
+| `skills/vtex-io-core/components/add-to-cart-button.md` | 🟠 HIGH | add to cart button, add-to-cart-button | Official component documentation (scraped): add to cart button |
+| `skills/vtex-io-core/components/breadcrumb.md` | 🟠 HIGH | breadcrumb, breadcrumb | Official component documentation (scraped): breadcrumb |
+| `skills/vtex-io-core/components/category-menu.md` | 🟡 MEDIUM | category menu, category-menu | Official component documentation (scraped): category menu |
+| `skills/vtex-io-core/components/componente-desconhecido.md` | 🟡 MEDIUM | componente desconhecido, componente-desconhecido | Official component documentation (scraped): componente desconhecido |
+| `skills/vtex-io-core/components/condition-layout.md` | 🟡 MEDIUM | condition layout, condition-layout | Official component documentation (scraped): condition layout |
+| `skills/vtex-io-core/components/disclosure-layout.md` | 🟡 MEDIUM | disclosure layout, disclosure-layout | Official component documentation (scraped): disclosure layout |
+| `skills/vtex-io-core/components/drawer.md` | 🟡 MEDIUM | drawer, drawer | Official component documentation (scraped): drawer |
+| `skills/vtex-io-core/components/footer.md` | 🟠 HIGH | footer, footer | Official component documentation (scraped): footer |
+| `skills/vtex-io-core/components/header.md` | 🟠 HIGH | header, header | Official component documentation (scraped): header |
+| `skills/vtex-io-core/components/iframe.md` | 🟡 MEDIUM | iframe, iframe | Official component documentation (scraped): iframe |
+| `skills/vtex-io-core/components/live-shopping.md` | 🟡 MEDIUM | live shopping, live-shopping | Official component documentation (scraped): live shopping |
+| `skills/vtex-io-core/components/locale-switcher.md` | 🟡 MEDIUM | locale switcher, locale-switcher | Official component documentation (scraped): locale switcher |
+| `skills/vtex-io-core/components/login.md` | 🟠 HIGH | login, login | Official component documentation (scraped): login |
+| `skills/vtex-io-core/components/media.md` | 🟡 MEDIUM | media, media | Official component documentation (scraped): media |
+| `skills/vtex-io-core/components/menu.md` | 🟠 HIGH | menu, menu | Official component documentation (scraped): menu |
+| `skills/vtex-io-core/components/minicart.md` | 🟠 HIGH | minicart, minicart | Official component documentation (scraped): minicart |
+| `skills/vtex-io-core/components/modal-layout.md` | 🟡 MEDIUM | modal layout, modal-layout | Official component documentation (scraped): modal layout |
+| `skills/vtex-io-core/components/order-placed.md` | 🟠 HIGH | order placed, order-placed | Official component documentation (scraped): order placed |
+| `skills/vtex-io-core/components/overlay-layout.md` | 🟡 MEDIUM | overlay layout, overlay-layout | Official component documentation (scraped): overlay layout |
+| `skills/vtex-io-core/components/product-availability.md` | 🟡 MEDIUM | product availability, product-availability | Official component documentation (scraped): product availability |
+| `skills/vtex-io-core/components/product-comparison.md` | 🟡 MEDIUM | product comparison, product-comparison | Official component documentation (scraped): product comparison |
+| `skills/vtex-io-core/components/product-customizer.md` | 🟡 MEDIUM | product customizer, product-customizer | Official component documentation (scraped): product customizer |
+| `skills/vtex-io-core/components/product-gifts.md` | 🟡 MEDIUM | product gifts, product-gifts | Official component documentation (scraped): product gifts |
+| `skills/vtex-io-core/components/product-identifier.md` | 🟡 MEDIUM | product identifier, product-identifier | Official component documentation (scraped): product identifier |
+| `skills/vtex-io-core/components/product-list.md` | 🟠 HIGH | product list, product-list | Official component documentation (scraped): product list |
+| `skills/vtex-io-core/components/product-price.md` | 🟠 HIGH | product price, product-price | Official component documentation (scraped): product price |
+| `skills/vtex-io-core/components/product-quantity.md` | 🟡 MEDIUM | product quantity, product-quantity | Official component documentation (scraped): product quantity |
+| `skills/vtex-io-core/components/product-specification-badges.md` | 🟡 MEDIUM | product specification badges, product-specification-badges | Official component documentation (scraped): product specification badges |
+| `skills/vtex-io-core/components/product-summary-attachment-list.md` | 🟡 MEDIUM | product summary attachment list, product-summary-attachment-list | Official component documentation (scraped): product summary attachment list |
+| `skills/vtex-io-core/components/product-summary-brand.md` | 🟡 MEDIUM | product summary brand, product-summary-brand | Official component documentation (scraped): product summary brand |
+| `skills/vtex-io-core/components/product-summary-buy-button.md` | 🟡 MEDIUM | product summary buy button, product-summary-buy-button | Official component documentation (scraped): product summary buy button |
+| `skills/vtex-io-core/components/product-summary-description.md` | 🟡 MEDIUM | product summary description, product-summary-description | Official component documentation (scraped): product summary description |
+| `skills/vtex-io-core/components/product-summary-image.md` | 🟡 MEDIUM | product summary image, product-summary-image | Official component documentation (scraped): product summary image |
+| `skills/vtex-io-core/components/product-summary-list.md` | 🟡 MEDIUM | product summary list, product-summary-list | Official component documentation (scraped): product summary list |
+| `skills/vtex-io-core/components/product-summary-name.md` | 🟡 MEDIUM | product summary name, product-summary-name | Official component documentation (scraped): product summary name |
+| `skills/vtex-io-core/components/product-summary-sku-selector.md` | 🟡 MEDIUM | product summary sku selector, product-summary-sku-selector | Official component documentation (scraped): product summary sku selector |
+| `skills/vtex-io-core/components/recommendation-shelf.md` | 🟡 MEDIUM | recommendation shelf, recommendation-shelf | Official component documentation (scraped): recommendation shelf |
+| `skills/vtex-io-core/components/reviews-and-ratings.md` | 🟡 MEDIUM | reviews and ratings, reviews-and-ratings | Official component documentation (scraped): reviews and ratings |
+| `skills/vtex-io-core/components/rich-text.md` | 🟠 HIGH | rich text, rich-text | Official component documentation (scraped): rich text |
+| `skills/vtex-io-core/components/search-result.md` | 🟠 HIGH | search result, search-result | Official component documentation (scraped): search result |
+| `skills/vtex-io-core/components/search.md` | 🟠 HIGH | search, search | Official component documentation (scraped): search |
+| `skills/vtex-io-core/components/seller-selector.md` | 🟡 MEDIUM | seller selector, seller-selector | Official component documentation (scraped): seller selector |
+| `skills/vtex-io-core/components/shelf.md` | 🟠 HIGH | shelf, shelf | Official component documentation (scraped): shelf |
+| `skills/vtex-io-core/components/stack-layout.md` | 🟡 MEDIUM | stack layout, stack-layout | Official component documentation (scraped): stack layout |
+| `skills/vtex-io-core/components/store-form.md` | 🟡 MEDIUM | store form, store-form | Official component documentation (scraped): store form |
+| `skills/vtex-io-core/components/store-image.md` | 🟡 MEDIUM | store image, store-image | Official component documentation (scraped): store image |
+| `skills/vtex-io-core/components/store-link.md` | 🟠 HIGH | store link, store-link | Official component documentation (scraped): store link |
+| `skills/vtex-io-core/components/store-locator.md` | 🟡 MEDIUM | store locator, store-locator | Official component documentation (scraped): store locator |
+| `skills/vtex-io-core/components/store-newsletter.md` | 🟡 MEDIUM | store newsletter, store-newsletter | Official component documentation (scraped): store newsletter |
+| `skills/vtex-io-core/components/tab-layout.md` | 🟡 MEDIUM | tab layout, tab-layout | Official component documentation (scraped): tab layout |
+| `skills/vtex-io-core/components/video.md` | 🟡 MEDIUM | video, video | Official component documentation (scraped): video |
+| `skills/vtex-io-core/components/vtex-io-sandbox-component.md` | 🟡 MEDIUM | vtex io sandbox component, vtex-io-sandbox-component | Official component documentation (scraped): vtex io sandbox component |
+| `skills/vtex-io-core/components/vtex-product-kit.md` | 🟡 MEDIUM | vtex product kit, vtex-product-kit | Official component documentation (scraped): vtex product kit |
+| `skills/vtex-io-core/components/vtex-product-specification-badges.md` | 🟡 MEDIUM | vtex product specification badges, vtex-product-specification-badges | Official component documentation (scraped): vtex product specification badges |
+| `skills/vtex-io-core/components/vtex-sticky-layout.md` | 🟡 MEDIUM | vtex sticky layout, vtex-sticky-layout | Official component documentation (scraped): vtex sticky layout |
 | **Styling** ||||
 | `skills/vtex-io-core/styles/css-handles.md` | 🔴 **CRITICAL** | styling, css handles, css | Styling custom blocks |
 | **Contexts** ||||

@@ -349,7 +349,7 @@ ADVANCED_COMPONENTS_LINKS = [
 # ---------------------------------------------------------------------------
 
 def main():
-    output_dir = './components'
+    output_dir = './skills/vtex-io-core/components'
     os.makedirs(output_dir, exist_ok=True)
 
     component_links = LAYOUT_LINKS + BASIC_COMPONENTS_LINKS + ADVANCED_COMPONENTS_LINKS

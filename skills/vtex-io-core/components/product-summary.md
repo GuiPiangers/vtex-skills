@@ -1,143 +1,150 @@
-# PRODUCT SUMMARY GUIDE
+<!-- Manual content lives outside the SCRAPED markers. -->
 
-> Complete guide for building product displays using VTEX Product Summary blocks
+<!-- SCRAPED:START -->
+# Product Summary
 
----
+[VTEX IO Apps](</docs/vtex-io-apps>)
 
-## 🎯 WHAT IS PRODUCT SUMMARY?
+Store Framework
 
-Product Summary is VTEX's system for displaying product information in **lists and grids** across your store.
+[Product display](</docs/guides/product-display>)
 
-**Core concept:**
+Product Summary
+
+Official extension
+
+Version: 2.91.2
+
+Latest version: 2.91.2
+
+![{"base64":"  ","img":{"width":110,"height":20,"type":"svg","mime":"image/svg+xml","wUnits":"px","hUnits":"px","url":"https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square"}}](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)
+
+Product Summary is an app for summarizing product information (such as name, price, and image) in other store blocks, such as the [Shelf](<https://developers.vtex.com/docs/guides/vtex-shelf/>) and the [Minicart](<https://developers.vtex.com/docs/guides/vtex-minicart/>).
+
+![{"base64":"  ","img":{"width":596,"height":1074,"type":"png","mime":"image/png","wUnits":"px","hUnits":"px","length":177196,"url":"https://cdn.jsdelivr.net/gh/vtexdocs/dev-portal-content@main/images/vtex-product-summary-0.png"}}](https://cdn.jsdelivr.net/gh/vtexdocs/dev-portal-content@main/images/vtex-product-summary-0.png)
+
+## Configurating the product summary
+
+  1. Import the `vtex.product-summary` app to your theme's dependencies in the `manifest.json`:
+
+
+
+
 ```
-Product Summary ≠ Product Page (PDP)
-Product Summary = Product Cards in Shelves/Grids/Search Results
-```
-
-**Mental model:**
-- Product Page = Full product details with add to cart
-- Product Summary = Compact product preview in lists
-
----
-
-## 🧱 ARCHITECTURE
-
-### Two-Layer System
-
-```
-┌─────────────────────────────────────────┐
-│  list-context.product-list              │  ← Fetches products (GraphQL)
-│  ├── product-summary.shelf              │  ← Structure wrapper
-│      ├── product-summary-image          │  ← Individual blocks
-│      ├── product-summary-name           │
-│      ├── product-summary-price          │
-│      └── product-summary-buy-button     │
-└─────────────────────────────────────────┘
-```
-
-**Layer 1: Data Provider**
-- `list-context.product-list` runs GraphQL queries
-- Fetches product data from catalog
-- Provides context to children
-
-**Layer 2: Display Structure**
-- `product-summary.shelf` receives product data
-- Distributes data to child blocks
-- Each child block renders specific product info
-
----
-
-## 📦 AVAILABLE BLOCKS
-
-### Core Blocks (Mandatory)
-
-| Block | Purpose |
-|-------|---------|
-| `list-context.product-list` | 🔴 **MANDATORY** - Fetches and provides product data |
-| `product-summary.shelf` | 🔴 **MANDATORY** - Structure wrapper for all child blocks |
-
-### Child Blocks (Composable)
-
-| Block | Renders | Common Use |
-|-------|---------|------------|
-| `product-summary-image` | Product image with hover support | All product cards |
-| `product-summary-name` | Product name/title | All product cards |
-| `product-summary-brand` | Brand name | Premium/branded products |
-| `product-summary-description` | Short description | Detailed listings |
-| `product-summary-sku-selector` | Color/size variations | Configurable products |
-| `product-summary-buy-button` | Quick buy button | Minicart v1 only |
-| `product-summary-attachment-list` | Product attachments | Customizable products |
-| `product-summary-sku-name` | Selected SKU name | After SKU selection |
-| `product-specification-badges` | Specification badges | Highlighted features |
-
-### Price Blocks (Use Product Price App)
-
-⚠️ **IMPORTANT:** `product-summary-price` is **DEPRECATED**
-
-**Use instead:**
-```json
-{
-  "dependencies": {
-    "vtex.product-price": "1.x"
-  }
-}
-```
-
-**Product Price blocks:**
-- `product-list-price` - Original price
-- `product-selling-price` - Current selling price
-- `product-spot-price` - Spot price (PIX/cash)
-- `product-installments` - Installment options
-- `product-price-savings` - Savings amount/percentage
-
----
-
-## 🚀 BASIC SETUP
-
-### Step 1: Add Dependency
-
-```json
-{
-  "dependencies": {
+"dependencies": {
     "vtex.product-summary": "2.x"
   }
-}
 ```
 
-### Step 2: Basic Structure
 
-```json
+Now, you can use all blocks exported by the `product-summary` app. See the full list below:
+
+Block name| Description  
+---|---  
+[`list-context.product-list`](<https://developers.vtex.com/docs/guides/vtex-product-summary-productsummarylist>)| ![{"base64":"  ","img":{"width":69,"height":20,"type":"svg","mime":"image/svg+xml","wUnits":"px","hUnits":"px","url":"https://img.shields.io/badge/-Mandatory-red"}}](https://img.shields.io/badge/-Mandatory-red) Renders the list of products in the Product Summary component. It fetches product information and provides it to the `product-summary.shelf` block. Then, this block provides its child blocks with the product information.  
+`product-summary.shelf`| ![{"base64":"  ","img":{"width":69,"height":20,"type":"svg","mime":"image/svg+xml","wUnits":"px","hUnits":"px","url":"https://img.shields.io/badge/-Mandatory-red"}}](https://img.shields.io/badge/-Mandatory-red) Logical block that provides the needed structure for the Product Summary component through its child blocks (listed below).  
+[`product-summary-attachment-list`](<https://developers.vtex.com/docs/guides/vtex-product-summary-productsummaryattachmentlist>)| Renders a list for product [attachments](<https://help.vtex.com/tutorial/adding-an-attachment--7zHMUpuoQE4cAskqEUWScU>).  
+[`product-summary-brand`](<https://developers.vtex.com/docs/guides/vtex-product-summary-productsummarybrand>)| Renders the product brand.  
+[`product-summary-buy-button`](<https://developers.vtex.com/docs/guides/vtex-product-summary-productsummarybuybutton>)| Renders the Buy button. This block must only be configured if your store uses the [Minicart v1](<https://github.com/vtex-apps/minicart/blob/383d7bbd3295f06d1b5854a0add561a872e1515c/docs/README.md>). If your store uses the [Minicart v2](<https://developers.vtex.com/docs/guides/vtex-minicart>), please configure the [**Add to Cart button**](<https://developers.vtex.com/docs/guides/vtex-add-to-cart-button>) instead.  
+[`product-summary-description`](<https://developers.vtex.com/docs/guides/vtex-product-summary-productsummarydescription>)| Renders the product description.  
+[`product-summary-image`](<https://developers.vtex.com/docs/guides/vtex-product-summary-productsummaryimage>)| Renders the product image.  
+[`product-summary-name`](<https://developers.vtex.com/docs/guides/vtex-product-summary-productsummaryname>)| Renders the product name.  
+[`product-summary-sku-name`](<https://developers.vtex.com/docs/guides/vtex-product-summary-productsummaryskuname>)| Renders the selected SKU name.  
+`product-summary-price`| ![{"base64":"  ","img":{"width":73,"height":20,"type":"svg","mime":"image/svg+xml","wUnits":"px","hUnits":"px","url":"https://img.shields.io/badge/-Deprecated-red"}}](https://img.shields.io/badge/-Deprecated-red) Renders the product price. This block has been deprecated in favor of the [Product Price](<https://cdn.jsdelivr.net/gh/vtexdocs/dev-portal-content@main/images/vtex-product-summary-3.png>) app. Although support for this block is still available, we strongly recommend using the Product Price app.  
+[`product-summary-sku-selector`](<https://developers.vtex.com/docs/guides/vtex-product-summary-productsummaryskuselector>)| Renders the SKU Selector block.  
+[`product-specification-badges`](<https://developers.vtex.com/vtex-developer-docs/docs/vtex-product-summary-productsummaryspecificationbadges>)| Renders badges based on product specifications.  
+  
+  2. Add the `list-context.product-list` block to a store template of your choice, and declare the `product-summary.shelf` in its block list. For example:
+
+
+
+
+```
 {
   "list-context.product-list": {
     "blocks": ["product-summary.shelf"]
   },
-  
+```
+
+
+> Although the block name 'product-summary.shelf' alludes to the Shelf component, it is not necessary to use this block in order to create a shelf component. The Product Summary Shelf displays a summary of the product information in other components, such as the [Minicart](<https://developers.vtex.com/docs/guides/vtex-minicart>) and the [Search Results](<https://developers.vtex.com/docs/guides/vtex-search-result>) pages.
+
+  3. Add the blocks from the list above as children of the `product-summary.shelf`, considering the product information you want to display in the product list. Take the following example in which the product name, description, image, price, SKU selector, and Buy button are all displayed in the Product Summary:
+
+
+
+
+```
+{
+  "list-context.product-list": {
+    "blocks": ["product-summary.shelf"]
+  },
   "product-summary.shelf": {
     "children": [
-      "product-summary-image",
       "product-summary-name",
-      "product-selling-price",
-      "add-to-cart-button"
+      "product-summary-description",
+      "product-summary-image",
+      "product-summary-price",
+      "product-summary-sku-selector",
+      "product-summary-buy-button"
     ]
   }
 }
 ```
 
-**That's it!** This creates a functional product list.
 
----
+## Customization
 
-## 📋 COMMON PATTERNS
+To apply CSS customizations to this and other blocks, follow the instructions given in the recipe on [Using CSS handles for store customization](<https://developers.vtex.com/docs/guides/vtex-io-documentation-using-css-handles-for-store-customization>).
 
-### Pattern 1: Simple Product Card (E-commerce Standard)
+CSS handles  
+---  
+`aspectRatio`  
+`buyButton`  
+`buyButtonContainer`  
+`clearLink`  
+`column`  
+`container`  
+`containerNormal`  
+`containerSmall`  
+`containerInline`  
+`description`  
+`element`  
+`image`  
+`imageContainer`  
+`imagePlaceholder`  
+`information`  
+`isHidden`  
+`nameContainer`  
+`priceContainer`  
+`quantityStepperContainer`  
+`spacer`
+<!-- SCRAPED:END -->
+
+## Mental Model (How to Think About It)
+
+Product Summary is the base for product cards used in shelves/grids/search results.
+
+In practice you always need:
+
+- `list-context.product-list` as the data provider
+- `product-summary.shelf` as the structure wrapper
+
+Everything else is composition.
+
+## Composition Patterns
+
+### Pattern 1: Simple Shelf Card (Most Stores)
 
 ```json
 {
+  "list-context.product-list#shelf": {
+    "blocks": ["product-summary.shelf#simple"]
+  },
   "product-summary.shelf#simple": {
     "children": [
       "product-summary-image",
       "product-summary-name",
-      "product-list-price",
       "product-selling-price",
       "add-to-cart-button"
     ]
@@ -145,1127 +152,90 @@ Product Summary = Product Cards in Shelves/Grids/Search Results
 }
 ```
 
-**Use case:** Most e-commerce stores, clean product grids
-
----
-
-### Pattern 2: Detailed Product Card (Fashion/Apparel)
+### Pattern 2: Fashion Card (Badge + Variations)
 
 ```json
 {
-  "product-summary.shelf#detailed": {
-    "children": [
-      "stack-layout#prodsum",
-      "product-summary-name",
-      "product-summary-brand",
-      "product-rating-inline",
-      "product-summary-sku-selector",
-      "product-selling-price",
-      "product-installments",
-      "add-to-cart-button"
-    ]
-  },
-  
-  "stack-layout#prodsum": {
-    "children": [
-      "product-summary-image",
-      "product-specification-badges"
-    ]
-  }
-}
-```
-
-**Use case:** Fashion stores with color/size variations, brands matter
-
----
-
-### Pattern 3: Quick Buy Card (Marketplaces)
-
-```json
-{
-  "product-summary.shelf#quickbuy": {
-    "children": [
-      "product-summary-image",
-      "product-summary-name",
-      "product-selling-price",
-      "product-summary-buy-button"
-    ]
-  },
-  
-  "product-summary-buy-button": {
-    "props": {
-      "isOneClickBuy": true
-    }
-  }
-}
-```
-
-**Use case:** One-click purchase flows, fast checkout
-
----
-
-### Pattern 4: Comparison Card (Electronics)
-
-```json
-{
-  "product-summary.shelf#comparison": {
-    "children": [
-      "product-summary-image",
-      "product-summary-name",
-      "product-summary-description",
-      "product-specification-badges",
-      "product-selling-price",
-      "product-installments",
-      "add-to-cart-button"
-    ]
-  }
-}
-```
-
-**Use case:** Electronics, appliances, technical products
-
----
-
-## 🎨 IMAGE CONFIGURATION
-
-### Basic Image
-
-```json
-{
-  "product-summary-image": {
-    "props": {
-      "showBadge": true,
-      "aspectRatio": "1:1",
-      "maxHeight": 300
-    }
-  }
-}
-```
-
-### Image with Hover Effect
-
-```json
-{
-  "product-summary-image#hover": {
-    "props": {
-      "showBadge": true,
-      "hoverImage": {
-        "criteria": "index",
-        "index": 1
-      }
-    }
-  }
-}
-```
-
-**Result:** Shows second image on hover
-
-### Image by Label
-
-```json
-{
-  "product-summary-image#label": {
-    "props": {
-      "mainImageLabel": {
-        "label": "front",
-        "labelMatchCriteria": "exact"
-      },
-      "hoverImage": {
-        "criteria": "label",
-        "label": "back",
-        "labelMatchCriteria": "exact"
-      }
-    }
-  }
-}
-```
-
-**Use case:** Controlled image display based on admin labels
-
-### Responsive Image Sizing
-
-```json
-{
-  "product-summary-image#responsive": {
-    "props": {
-      "width": {
-        "desktop": 400,
-        "mobile": 200
-      },
-      "aspectRatio": {
-        "desktop": "1:1",
-        "mobile": "3:4"
-      }
-    }
-  }
-}
-```
-
----
-
-## 🏷️ NAME & BRAND
-
-### Product Name
-
-```json
-{
-  "product-summary-name": {
-    "props": {
-      "tag": "h2",
-      "showFieldsProps": {
-        "showProductReference": false,
-        "showBrandName": false,
-        "showSku": false
-      }
-    }
-  }
-}
-```
-
-### Product Name with Brand
-
-```json
-{
-  "product-summary-name#with-brand": {
-    "props": {
-      "tag": "h3",
-      "showFieldsProps": {
-        "showBrandName": true,
-        "showProductReference": false
-      }
-    }
-  }
-}
-```
-
-### Separate Brand Block
-
-```json
-{
-  "product-summary.shelf": {
-    "children": [
-      "product-summary-image",
-      "product-summary-brand",
-      "product-summary-name",
-      "product-selling-price"
-    ]
-  }
-}
-```
-
----
-
-## 💰 PRICE CONFIGURATION
-
-### Modern Price Setup (Recommended)
-
-**Dependencies:**
-```json
-{
-  "dependencies": {
-    "vtex.product-summary": "2.x",
-    "vtex.product-price": "1.x"
-  }
-}
-```
-
-**Basic Price:**
-```json
-{
-  "product-summary.shelf": {
-    "children": [
-      "product-summary-image",
-      "product-summary-name",
-      "flex-layout.row#price-block"
-    ]
-  },
-  
-  "flex-layout.row#price-block": {
-    "children": [
-      "product-list-price",
-      "product-selling-price"
-    ]
-  }
-}
-```
-
-### Price with Installments
-
-```json
-{
-  "flex-layout.col#price": {
-    "children": [
-      "product-list-price",
-      "product-selling-price",
-      "product-installments"
-    ]
-  },
-  
-  "product-installments": {
-    "props": {
-      "message": "or {installmentsNumber}x of {installmentValue} interest-free"
-    }
-  }
-}
-```
-
-### Price with Savings
-
-```json
-{
-  "flex-layout.row#price-savings": {
-    "children": [
-      "product-selling-price",
-      "product-price-savings"
-    ]
-  },
-  
-  "product-price-savings": {
-    "props": {
-      "message": "Save {savingsPercentage}"
-    }
-  }
-}
-```
-
----
-
-## 🔄 ASYNC PRICES (Performance)
-
-For large product lists, fetch prices asynchronously to improve initial page load.
-
-### Step 1: Configure Search Result
-
-```json
-{
-  "search-result-layout.desktop": {
-    "props": {
-      "context": {
-        "simulationBehavior": "skip"
-      }
-    }
-  }
-}
-```
-
-### Step 2: Enable Async on Product Summary
-
-```json
-{
-  "product-summary.shelf": {
-    "props": {
-      "priceBehavior": "async"
-    },
-    "children": [
-      "product-summary-image",
-      "product-summary-name",
-      "product-price-suspense"
-    ]
-  }
-}
-```
-
-### Step 3: Wrap Prices in Suspense
-
-```json
-{
-  "product-price-suspense": {
-    "children": [
-      "product-list-price",
-      "product-selling-price",
-      "product-installments"
-    ]
-  }
-}
-```
-
-**Result:** Products load immediately, prices load progressively
-
----
-
-## 🎛️ SKU SELECTOR
-
-### Basic SKU Selector
-
-```json
-{
-  "product-summary-sku-selector": {
-    "props": {
-      "showVariationsLabels": ["false"]
-    }
-  }
-}
-```
-
-### SKU Selector with Options
-
-```json
-{
-  "product-summary-sku-selector#detailed": {
-    "props": {
-      "showVariationsLabels": ["true"],
-      "visibleVariations": ["Color", "Size"],
-      "displayMode": "default",
-      "initialSelection": "complete"
-    }
-  }
-}
-```
-
-**Props explained:**
-- `showVariationsLabels`: Show "Color:", "Size:" labels
-- `visibleVariations`: Which variations to show
-- `displayMode`: `"default"` (buttons) or `"select"` (dropdown)
-- `initialSelection`: Auto-select first SKU
-
----
-
-## 🛒 BUY BUTTON
-
-### ⚠️ IMPORTANT: Minicart Version
-
-**Minicart v1 → Use `product-summary-buy-button`**
-**Minicart v2 → Use `add-to-cart-button`**
-
-### Buy Button (Minicart v1 - Legacy)
-
-```json
-{
-  "product-summary-buy-button": {
-    "props": {
-      "isOneClickBuy": false,
-      "displayBuyButton": "displayButtonAlways"
-    }
-  }
-}
-```
-
-### Add to Cart (Minicart v2 - Recommended)
-
-```json
-{
-  "dependencies": {
-    "vtex.add-to-cart-button": "0.x"
-  }
-}
-```
-
-```json
-{
-  "add-to-cart-button": {
-    "props": {
-      "text": "Add to Cart",
-      "onClickBehavior": "ensure-sku-selection",
-      "customToastUrl": "/checkout/#/cart"
-    }
-  }
-}
-```
-
-**`onClickBehavior` options:**
-- `"add-to-cart"` - Always add to cart (needs SKU selector)
-- `"go-to-product-page"` - Redirect to PDP
-- `"ensure-sku-selection"` - Go to PDP if SKU not selected
-
----
-
-## 📊 LIST CONTEXT CONFIGURATION
-
-### Fetching Products
-
-The `list-context.product-list` accepts props to control what products are fetched:
-
-```json
-{
-  "list-context.product-list#category": {
-    "blocks": ["product-summary.shelf"],
-    "props": {
-      "category": "1",
-      "orderBy": "OrderByTopSaleDESC",
-      "hideUnavailableItems": true,
-      "maxItems": 10,
-      "skusFilter": "FIRST_AVAILABLE",
-      "installmentCriteria": "MAX_WITHOUT_INTEREST"
-    }
-  }
-}
-```
-
-### Key Props Explained
-
-**Product Selection:**
-- `category`: Category ID (use "/" for subcategories: "1/2/3")
-- `collection`: Collection ID
-- `specificationFilters`: Array of spec filters
-- `orderBy`: Sort order (see table below)
-
-**Performance:**
-- `skusFilter`: Which SKUs to fetch (see table below)
-- `maxItems`: Limit number of products
-- `hideUnavailableItems`: Skip out-of-stock
-
-**Pricing:**
-- `installmentCriteria`: Which installment to show (see table below)
-- `preferredSKU`: Which SKU to prioritize
-
-### Sort Options (`orderBy`)
-
-| Value | Result |
-|-------|--------|
-| `""` | Relevance (default) |
-| `OrderByTopSaleDESC` | Best sellers |
-| `OrderByReleaseDateDESC` | Newest first |
-| `OrderByBestDiscountDESC` | Biggest discounts |
-| `OrderByPriceDESC` | Highest price |
-| `OrderByPriceASC` | Lowest price |
-| `OrderByNameASC` | A-Z |
-| `OrderByNameDESC` | Z-A |
-
-### SKU Filter Options (`skusFilter`)
-
-| Value | Behavior | Performance | Use When |
-|-------|----------|-------------|----------|
-| `FIRST_AVAILABLE` | Only first available SKU | ⚡ Best | No SKU selector on shelf |
-| `ALL_AVAILABLE` | All available SKUs | ⚡⚡ Good | Have SKU selector |
-| `ALL` | All SKUs (including unavailable) | ⚠️ Slower | Need full SKU list |
-
-### Installment Options (`installmentCriteria`)
-
-| Value | Shows |
-|-------|-------|
-| `MAX_WITHOUT_INTEREST` | Max installments with 0% interest |
-| `MAX_WITH_INTEREST` | Max installments (any interest) |
-
-### Preferred SKU (`preferredSKU`)
-
-| Value | Selects |
-|-------|---------|
-| `FIRST_AVAILABLE` | First available SKU |
-| `LAST_AVAILABLE` | Last available SKU |
-| `PRICE_ASC` | Cheapest available |
-| `PRICE_DESC` | Most expensive available |
-
----
-
-## 🎯 REAL-WORLD EXAMPLES
-
-### Example 1: Fashion Store Shelf
-
-```json
-{
-  "list-context.product-list#fashion": {
-    "blocks": ["product-summary.shelf#fashion"],
-    "props": {
-      "orderBy": "OrderByReleaseDateDESC",
-      "maxItems": 12,
-      "skusFilter": "ALL_AVAILABLE"
-    }
-  },
-  
   "product-summary.shelf#fashion": {
     "children": [
       "stack-layout#image-badge",
       "product-summary-brand",
       "product-summary-name",
       "product-summary-sku-selector",
-      "flex-layout.row#price-fashion",
+      "flex-layout.row#price",
       "add-to-cart-button"
     ]
   },
-  
   "stack-layout#image-badge": {
-    "children": [
-      "product-summary-image",
-      "product-specification-badges"
-    ]
+    "children": ["product-summary-image", "product-specification-badges"]
   },
-  
-  "product-summary-image": {
-    "props": {
-      "aspectRatio": "3:4",
-      "hoverImage": {
-        "criteria": "index",
-        "index": 1
-      }
-    }
-  },
-  
-  "flex-layout.row#price-fashion": {
-    "children": [
-      "product-list-price",
-      "product-selling-price"
-    ]
+  "flex-layout.row#price": {
+    "children": ["product-list-price", "product-selling-price"]
   }
 }
 ```
 
----
+### Pattern 3: Performance (Async Prices)
 
-### Example 2: Electronics Comparison Grid
-
-```json
-{
-  "list-context.product-list#electronics": {
-    "blocks": ["product-summary.shelf#electronics"],
-    "props": {
-      "category": "3",
-      "orderBy": "OrderByPriceDESC",
-      "maxItems": 8,
-      "skusFilter": "FIRST_AVAILABLE"
-    }
-  },
-  
-  "product-summary.shelf#electronics": {
-    "children": [
-      "product-summary-image",
-      "product-summary-name",
-      "product-summary-description",
-      "product-specification-badges",
-      "flex-layout.col#price-installments",
-      "add-to-cart-button"
-    ]
-  },
-  
-  "product-summary-image": {
-    "props": {
-      "aspectRatio": "1:1",
-      "width": 300
-    }
-  },
-  
-  "flex-layout.col#price-installments": {
-    "children": [
-      "product-selling-price",
-      "product-installments"
-    ]
-  },
-  
-  "product-installments": {
-    "props": {
-      "message": "or up to {installmentsNumber}x of {installmentValue}"
-    }
-  }
-}
-```
-
----
-
-### Example 3: Marketplace Quick Buy
-
-```json
-{
-  "list-context.product-list#quickbuy": {
-    "blocks": ["product-summary.shelf#quickbuy"],
-    "props": {
-      "orderBy": "OrderByTopSaleDESC",
-      "maxItems": 20,
-      "skusFilter": "FIRST_AVAILABLE",
-      "hideUnavailableItems": true
-    }
-  },
-  
-  "product-summary.shelf#quickbuy": {
-    "props": {
-      "priceBehavior": "async"
-    },
-    "children": [
-      "product-summary-image",
-      "product-summary-name",
-      "product-price-suspense"
-    ]
-  },
-  
-  "product-price-suspense": {
-    "children": [
-      "product-selling-price",
-      "add-to-cart-button"
-    ]
-  },
-  
-  "product-summary-image": {
-    "props": {
-      "showBadge": true,
-      "aspectRatio": "1:1"
-    }
-  },
-  
-  "add-to-cart-button": {
-    "props": {
-      "onClickBehavior": "ensure-sku-selection"
-    }
-  }
-}
-```
-
----
-
-### Example 4: Search Results with Filters
+Use async prices when rendering large lists.
 
 ```json
 {
   "search-result-layout.desktop": {
-    "children": [
-      "breadcrumb.search",
-      "search-title.v2",
-      "total-products.v2",
-      "order-by.v2",
-      "search-fetch-previous",
-      "search-content",
-      "filter-navigator.v3",
-      "search-fetch-more"
-    ],
     "props": {
-      "pagination": "show-more",
-      "mobileLayout": {
-        "mode1": "small",
-        "mode2": "normal"
-      },
       "context": {
-        "skusFilter": "ALL_AVAILABLE",
         "simulationBehavior": "skip"
       }
     }
   },
-  
-  "search-content": {
-    "blocks": ["gallery", "not-found"]
-  },
-  
-  "gallery": {
-    "blocks": ["product-summary.shelf#search"]
-  },
-  
-  "product-summary.shelf#search": {
+  "product-summary.shelf#async": {
     "props": {
       "priceBehavior": "async"
     },
     "children": [
       "product-summary-image",
       "product-summary-name",
-      "product-rating-inline",
       "product-price-suspense"
     ]
   },
-  
   "product-price-suspense": {
-    "children": [
-      "product-list-price",
-      "product-selling-price",
-      "product-installments",
-      "add-to-cart-button"
-    ]
+    "children": ["product-selling-price", "product-installments", "add-to-cart-button"]
   }
 }
 ```
 
----
+## List Context Tuning (Pragmatic Defaults)
 
-## 🎨 CUSTOMIZATION (CSS Handles)
+For shelves/grids:
 
-### Product Summary Container
+- Prefer `skusFilter: "FIRST_AVAILABLE"` unless you need a SKU selector.
+- Keep `maxItems` reasonable (12 is a good default).
+- Use `hideUnavailableItems: true` when the experience should avoid out-of-stock cards.
 
-```css
-/* Main container */
-.container { }
-.containerNormal { }  /* Default size */
-.containerSmall { }   /* Compact mode */
-.containerInline { }  /* Inline layout */
-
-/* Structural */
-.element { }
-.column { }
-.information { }
-```
-
-### Image Handles
-
-```css
-.imageContainer { }
-.image { }
-.imagePlaceholder { }
-.aspectRatio { }
-.hoverImage { }
-.hoverEffect { }
-.mainImageHovered { }
-```
-
-### Name & Brand Handles
-
-```css
-.nameContainer { }
-.nameWrapper { }
-.brandName { }
-.skuName { }
-.productReference { }
-```
-
-### Price Handles
-
-```css
-.priceContainer { }
-```
-
-### Button Handles
-
-```css
-.buyButtonContainer { }
-.buyButton { }
-.isHidden { }
-```
-
-### Example Customization
-
-```css
-/* Custom product card styling */
-.container {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 16px;
-  transition: transform 0.2s;
-}
-
-.container:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.imageContainer {
-  position: relative;
-  overflow: hidden;
-  border-radius: 4px;
-}
-
-.nameContainer {
-  margin: 12px 0;
-  min-height: 48px;
-}
-
-.buyButton {
-  width: 100%;
-  background: #000;
-  color: #fff;
-  border-radius: 4px;
-  padding: 12px;
-}
-```
-
----
-
-## ⚠️ COMMON MISTAKES & SOLUTIONS
-
-### Mistake 1: Forgetting Data Provider
-
-❌ **Wrong:**
-```json
-{
-  "product-summary.shelf": {
-    "children": ["product-summary-image"]
-  }
-}
-```
-
-✅ **Correct:**
-```json
-{
-  "list-context.product-list": {
-    "blocks": ["product-summary.shelf"]
-  },
-  "product-summary.shelf": {
-    "children": ["product-summary-image"]
-  }
-}
-```
-
----
-
-### Mistake 2: Using Deprecated Price Block
-
-❌ **Wrong:**
-```json
-{
-  "children": [
-    "product-summary-price"  // Deprecated!
-  ]
-}
-```
-
-✅ **Correct:**
-```json
-{
-  "dependencies": {
-    "vtex.product-price": "1.x"
-  }
-}
-```
-```json
-{
-  "children": [
-    "product-selling-price"
-  ]
-}
-```
-
----
-
-### Mistake 3: Wrong Buy Button for Minicart v2
-
-❌ **Wrong:**
-```json
-{
-  "children": [
-    "product-summary-buy-button"  // Only for Minicart v1!
-  ]
-}
-```
-
-✅ **Correct:**
-```json
-{
-  "dependencies": {
-    "vtex.add-to-cart-button": "0.x"
-  }
-}
-```
-```json
-{
-  "children": [
-    "add-to-cart-button"
-  ]
-}
-```
-
----
-
-### Mistake 4: Not Optimizing for Performance
-
-❌ **Wrong:**
-```json
-{
-  "list-context.product-list": {
-    "props": {
-      "skusFilter": "ALL",  // Fetches ALL SKUs including unavailable
-      "maxItems": 100       // Too many items
-    }
-  }
-}
-```
-
-✅ **Correct:**
-```json
-{
-  "list-context.product-list": {
-    "props": {
-      "skusFilter": "FIRST_AVAILABLE",  // Only first SKU
-      "maxItems": 12,                   // Reasonable limit
-      "hideUnavailableItems": true
-    }
-  },
-  "product-summary.shelf": {
-    "props": {
-      "priceBehavior": "async"  // Async prices
-    }
-  }
-}
-```
-
----
-
-### Mistake 5: Missing SKU Selector with "Always Add to Cart"
-
-❌ **Wrong:**
-```json
-{
-  "product-summary.shelf": {
-    "children": [
-      "product-summary-image",
-      "product-summary-name",
-      "add-to-cart-button"  // No SKU selector!
-    ]
-  },
-  "add-to-cart-button": {
-    "props": {
-      "onClickBehavior": "add-to-cart"  // Will fail without SKU!
-    }
-  }
-}
-```
-
-✅ **Correct - Option 1 (Add SKU Selector):**
-```json
-{
-  "children": [
-    "product-summary-image",
-    "product-summary-name",
-    "product-summary-sku-selector",  // ← Add this
-    "add-to-cart-button"
-  ]
-}
-```
-
-✅ **Correct - Option 2 (Redirect to PDP):**
-```json
-{
-  "add-to-cart-button": {
-    "props": {
-      "onClickBehavior": "ensure-sku-selection"  // ← Safe behavior
-    }
-  }
-}
-```
-
----
-
-## 📋 DECISION TREE
-
-```
-BUILDING PRODUCT SUMMARY?
-│
-├─ Need product list/grid?
-│  → Use list-context.product-list + product-summary.shelf
-│
-├─ Which blocks to include?
-│  ├─ Image? → product-summary-image
-│  ├─ Name? → product-summary-name
-│  ├─ Brand? → product-summary-brand
-│  ├─ Price? → product-selling-price (NOT product-summary-price!)
-│  ├─ Variations? → product-summary-sku-selector
-│  └─ Buy? → add-to-cart-button (v2) OR product-summary-buy-button (v1)
-│
-├─ Performance concerns?
-│  ├─ Large lists? → priceBehavior: "async"
-│  ├─ Many SKUs? → skusFilter: "FIRST_AVAILABLE"
-│  └─ Search results? → simulationBehavior: "skip"
-│
-└─ Advanced features?
-   ├─ Hover image? → hoverImage prop
-   ├─ Badges? → product-specification-badges
-   └─ Installments? → product-installments
-```
-
----
-
-## 🔗 RELATED GUIDES
-
-- **Product Price** - `/mnt/skills/public/product-price/SKILL.md` (price blocks)
-- **Search Result** - `/mnt/skills/public/search-result/SKILL.md` (search pages)
-- **Flex Layout** - `/mnt/skills/public/flex-layout/SKILL.md` (layout structure)
-- **Add to Cart Button** - Minicart v2 integration
-
----
-
-## 📚 QUICK REFERENCE
-
-### Essential Dependencies
+Example:
 
 ```json
 {
-  "dependencies": {
-    "vtex.product-summary": "2.x",
-    "vtex.product-price": "1.x",
-    "vtex.add-to-cart-button": "0.x"
-  }
-}
-```
-
-### Minimal Working Example
-
-```json
-{
-  "list-context.product-list": {
-    "blocks": ["product-summary.shelf"]
-  },
-  "product-summary.shelf": {
-    "children": [
-      "product-summary-image",
-      "product-summary-name",
-      "product-selling-price",
-      "add-to-cart-button"
-    ]
-  }
-}
-```
-
-### Performance Optimized Example
-
-```json
-{
-  "list-context.product-list": {
-    "blocks": ["product-summary.shelf"],
+  "list-context.product-list#shelf": {
+    "blocks": ["product-summary.shelf#simple"],
     "props": {
       "skusFilter": "FIRST_AVAILABLE",
       "maxItems": 12,
       "hideUnavailableItems": true
     }
-  },
-  "product-summary.shelf": {
-    "props": {
-      "priceBehavior": "async"
-    },
-    "children": [
-      "product-summary-image",
-      "product-summary-name",
-      "product-price-suspense"
-    ]
-  },
-  "product-price-suspense": {
-    "children": [
-      "product-selling-price"
-    ]
   }
 }
 ```
 
----
+## Common Mistakes (Checklist)
 
-## ✅ CHECKLIST
+- Declaring `product-summary.shelf` without `list-context.product-list` above it.
+- Using deprecated/legacy blocks when modern apps exist (price and add-to-cart flows).
+- Rendering too many items or fetching too many SKUs per card (slow shelves).
+- Using "always add to cart" behavior without ensuring SKU selection.
 
-**Before deploying Product Summary:**
+## Internal References
 
-### Critical:
-- [ ] Used `list-context.product-list` to fetch products
-- [ ] Used `product-summary.shelf` as structure wrapper
-- [ ] Used `product-selling-price` (NOT deprecated `product-summary-price`)
-- [ ] Used correct buy button (`add-to-cart-button` for v2 OR `product-summary-buy-button` for v1)
-- [ ] If using "add-to-cart" behavior, included SKU selector OR used "ensure-sku-selection"
+- `skills/vtex-io-core/components/flex-layout.md`
+- `skills/vtex-io-core/components/slider-layout.md`
 
-### Performance:
-- [ ] Set appropriate `skusFilter` for use case
-- [ ] Limited `maxItems` to reasonable number
-- [ ] Considered `priceBehavior: "async"` for large lists
-- [ ] Set `hideUnavailableItems: true` if applicable
-
-### User Experience:
-- [ ] Image has proper `aspectRatio` for consistency
-- [ ] Added hover image for visual feedback (optional)
-- [ ] Included installments for high-ticket items (optional)
-- [ ] Added SKU selector for configurable products (optional)
-- [ ] Tested on mobile and desktop
-
-### SEO & Accessibility:
-- [ ] Product name uses semantic HTML tag (`h2`, `h3`)
-- [ ] Images have proper dimensions
-- [ ] Links are accessible
-
----
-
-## 🎓 KEY TAKEAWAYS
-
-1. **Two-layer architecture**: `list-context.product-list` (data) + `product-summary.shelf` (display)
-
-2. **Price blocks are separate**: Use `vtex.product-price` app, NOT `product-summary-price`
-
-3. **Buy button depends on Minicart version**:
-   - Minicart v2 → `add-to-cart-button`
-   - Minicart v1 → `product-summary-buy-button`
-
-4. **Performance matters**: Use `async` prices and optimize `skusFilter`
-
-5. **Composable blocks**: Mix and match child blocks based on needs
-
-6. **Context is key**: Product Summary works anywhere with product context (shelves, search, related products)
-
----
-
-**Official Documentation:**
-- https://developers.vtex.com/docs/apps/vtex.product-summary
-- https://developers.vtex.com/docs/apps/vtex.product-price

@@ -1,11 +1,10 @@
 ---
-
 name: vtex-specialist
 description: VTEX specialist focused on implementing features for Store Framework, VTEX IO apps, and integrations with Master Data, OMS, and Checkout. Use when working on VTEX stores, routes, blocks, custom apps, or external service integrations. Triggers on keywords like vtex, vtex-io, store-framework, manifest, workspace, checkout, orderForm, masterdata, catalog, logistics.
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
 skills: vtex-io-core, clean-code
----------------------------------------------------------------------------------------
+---
 
 # VTEX Specialist
 

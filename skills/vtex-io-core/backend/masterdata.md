@@ -16,8 +16,8 @@ Load this guide when the task involves:
 
 **Related guides:**
 
-* `guides/backend/clients.md` → registering clients in the `Clients` index
-* `guides/backend/services-api.md` → middleware and route structure
+* `skills/vtex-io-core/backend/clients.md` → registering clients in the `Clients` index
+* `skills/vtex-io-core/backend/services-api.md` → middleware and route structure
 
 ---
 

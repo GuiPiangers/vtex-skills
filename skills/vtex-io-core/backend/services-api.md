@@ -15,8 +15,7 @@ Load this guide when the task involves:
 - Wiring routes → middlewares in `node/index.ts`
 
 **Related guides:**
-- `guides/backend/clients.md` → for HTTP clients and external API calls
-- `guides/backend/graphql.md` → for GraphQL schema and resolvers
+- `skills/vtex-io-core/backend/clients.md` → for HTTP clients and external API calls
 
 ---
 
@@ -263,7 +262,7 @@ export class Clients extends IOClients {
 }
 ```
 
-> See `guides/backend/clients.md` for how to build each type of client.
+> See `skills/vtex-io-core/backend/clients.md` for how to build each type of client.
 
 ---
 

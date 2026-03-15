@@ -16,11 +16,12 @@ This repo is intentionally **VTEX-focused**. It keeps only:
 ## 🏗️ Directory Structure
 
 ```plaintext
-.agent/
+.
 ├── ARCHITECTURE.md          # This file
 ├── agents/                  # VTEX-only agent(s)
+├── GEMINI.md                # Gemini workspace rules
 ├── skills/                  # VTEX knowledge modules
-└── rules/                   # Global rules
+└── .github/                 # Editor/assistant instructions
 ```
 
 ---

@@ -14,8 +14,7 @@ Load this guide when the task involves:
 - Using MasterData for CRUD operations
 
 **Related guides:**
-- `guides/backend/services-api.md` → for route/middleware setup
-- `guides/backend/graphql.md` → for GraphQL resolvers that use clients
+- `skills/vtex-io-core/backend/services-api.md` → for route/middleware setup
 
 ---
 

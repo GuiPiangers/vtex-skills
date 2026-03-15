@@ -1,0 +1,9 @@
+# Cursor Rules (VTEX IO Docs Repo)
+
+You are working in a documentation repo that teaches how to build VTEX IO solutions.
+
+- Always open `ARCHITECTURE.md` and `skills/vtex-io-core/SKILL.md` before implementing.
+- Use `skills/vtex-io-core/SKILL.md` to decide which guide(s) to open next; do not open everything.
+- Keep changes minimal and consistent with existing docs.
+- If the user asks to build VTEX code, follow the patterns in the relevant guide files under `skills/vtex-io-core/`.
+

@@ -33,8 +33,8 @@ Agent reasoning:
 1. Domain: Layout + Components
 2. Triggers match: "grid", "layout", "custom"
 3. Priority loads:
-   - guides/layout/flex-layout.md (🔴 CRITICAL)
-   - guides/components/product-summary.md (🟠 HIGH)
+   - skills/vtex-io-core/components/flex-layout.md (🔴 CRITICAL)
+   - skills/vtex-io-core/components/product-summary.md (🟠 HIGH)
 4. Apply patterns from loaded guides
 ```
 
@@ -45,22 +45,22 @@ Agent reasoning:
 | Guide | Priority | Triggers | Purpose |
 |-------|----------|----------|---------|
 | **Components** ||||
-| `.agent/skills/components/flex-layout.md` | 🔴 **CRITICAL** | grid, row, col, layout, structure, flexbox | Flexbox layout system |
-| `.agent/skills/components/slider-layout.md` | 🟡 MEDIUM | slider, carousel, slide | Slider layout system |
-| `.agent/skills/components/responsive-layout.md` | 🟡 MEDIUM | mobile, responsive, breakpoint, device | Responsive patterns |
-| `.agent/skills/components/custom-components.md` | 🔴 **CRITICAL** | create block, custom component, new block, React | Build custom blocks |
-| `.agent/skills/components/product-summary.md` | 🟠 HIGH | product card, shelf, product list, showcase | Product displays |
-| `.agent/skills/components/product-prices.md` | 🟠 HIGH | product prices, shelf, product price | Product prices display |
+| `skills/vtex-io-core/components/flex-layout.md` | 🔴 **CRITICAL** | grid, row, col, layout, structure, flexbox | Flexbox layout system |
+| `skills/vtex-io-core/components/slider-layout.md` | 🟡 MEDIUM | slider, carousel, slide | Slider layout system |
+| `skills/vtex-io-core/components/responsive-layout.md` | 🟡 MEDIUM | mobile, responsive, breakpoint, device | Responsive patterns |
+| `skills/vtex-io-core/components/custom-components.md` | 🔴 **CRITICAL** | create block, custom component, new block, React | Build custom blocks |
+| `skills/vtex-io-core/components/product-summary.md` | 🟠 HIGH | product card, shelf, product list, showcase | Product displays |
+| `skills/vtex-io-core/components/product-prices.md` | 🟠 HIGH | product prices, shelf, product price | Product prices display |
 | **Styling** ||||
-| `.agent/skills/styles/css-handles.md` | 🔴 **CRITICAL** | Styling, CSS Handles, CSS | Styling custom blocks |
+| `skills/vtex-io-core/styles/css-handles.md` | 🔴 **CRITICAL** | styling, css handles, css | Styling custom blocks |
 | **Contexts** ||||
-| `.agent/skills/contexts/product-context.md` | 🟠 HIGH | product data, PDP, product info, product context | Product information or manipulate product infos and SKUs |
-| `.agent/skills/contexts/useOrderForm.md` | 🟠 HIGH | cart, order, checkout, add to cart | Cart management |
-| `.agent/skills/contexts/useRuntime.md` | 🟡 MEDIUM | route, navigation, query params, runtime | Runtime context |
+| `skills/vtex-io-core/contexts/product-context.md` | 🟠 HIGH | product data, PDP, product info, product context | Product information and SKU selection state |
+| `skills/vtex-io-core/contexts/useOrderForm.md` | 🟠 HIGH | cart, orderform, checkout, add to cart | Cart management via OrderForm |
+| `skills/vtex-io-core/contexts/useRuntime.md` | 🟡 MEDIUM | route, navigation, query params, runtime | Runtime route/navigation context |
 | **Backend** ||||
-| `.agent/skills/backend/services-api.md` | 🟡 **CRITICAL** | services, route handler, middleware, validation, API | Request handling |
-| `.agent/skills/backend/clients.md` | 🔴 **CRITICAL** | API call, HTTP request, external API, fetch, clients | HTTP clients |
-| `.agent/skills/backend/masterdata.md` | 🟠 HIGH | masterdata | Masterdata integration |
+| `skills/vtex-io-core/backend/services-api.md` | 🟡 **CRITICAL** | services, route handler, middleware, validation, API | Request handling |
+| `skills/vtex-io-core/backend/clients.md` | 🔴 **CRITICAL** | API call, HTTP request, external API, fetch, clients | HTTP clients |
+| `skills/vtex-io-core/backend/masterdata.md` | 🟠 HIGH | masterdata | Master Data integration |
 
 
 ---
@@ -71,7 +71,7 @@ Agent reasoning:
 1. Match keywords from task to "Triggers" column
 2. Load by priority if multiple matches (🔴 → 🟠 → 🟡)
 3. Load on-demand only - never preload all guides
-4. Start by identifying domain (layout/components/hooks/backend)
+4. Start by identifying domain (layout/components/contexts/backend)
 ```
 
 ### Loading Examples
@@ -79,19 +79,19 @@ Agent reasoning:
 ```
 Task: "Create a custom product badge component"
 → Triggers: "create", "custom", "component"
-→ Loads: .agent/skills/components/custom-components.md (🔴 CRITICAL)
+→ Loads: skills/vtex-io-core/components/custom-components.md (🔴 CRITICAL)
 
 Task: "Build PDP with product info and add to cart button"
 → Triggers: "product info", "add to cart"
-→ Loads: .agent/skills/hooks/useProduct.md (🟠), .agent/skills/hooks/useOrderForm.md (🟠)
+→ Loads: skills/vtex-io-core/contexts/product-context.md (🟠), skills/vtex-io-core/contexts/useOrderForm.md (🟠)
 
 Task: "Create responsive grid layout for homepage"
 → Triggers: "responsive", "grid", "layout"
-→ Loads: .agent/skills/components/flex-layout.md (🔴), .agent/skills/components/responsive-layout.md (🟡)
+→ Loads: skills/vtex-io-core/components/flex-layout.md (🔴), skills/vtex-io-core/components/responsive-layout.md (🟡)
 
 Task: "Fetch data from external API in backend"
 → Triggers: "API", "fetch", "backend"
-→ Loads: .agent/skills/backend/clients.md (🔴 CRITICAL)
+→ Loads: skills/vtex-io-core/backend/clients.md (🔴 CRITICAL)
 
 ```
 
@@ -218,7 +218,7 @@ Provided by official VTEX apps:
 3. Declare in `manifest.json`
 4. Use declaratively in JSON blocks
 
-**Guide:** `guides/components/custom-components.md`
+**Guide:** `skills/vtex-io-core/components/custom-components.md`
 
 ---
 
@@ -302,25 +302,22 @@ Dynamic injection via `<ExtensionPoint />`.
 
 ```
 📐 Building page layout / structure
-  → Load: guides/layout/flex-layout.md (🔴)
+  → Load: skills/vtex-io-core/components/flex-layout.md (🔴)
 
 🧩 Creating a new custom block
-  → Load: guides/components/custom-components.md (🔴)
+  → Load: skills/vtex-io-core/components/custom-components.md (🔴)
 
 📦 Using native VTEX components
-  → Load: guides/components/{component}.md (🟠/🟡)
+  → Load: skills/vtex-io-core/components/{component}.md (🟠/🟡)
 
 📊 Need product/cart data in component
-  → Load: guides/hooks/useProduct.md or useOrderForm.md (🟠)
+  → Load: skills/vtex-io-core/contexts/product-context.md or skills/vtex-io-core/contexts/useOrderForm.md (🟠)
 
 🔌 Calling external APIs
-  → Load: guides/backend/clients.md (🔴)
-
-🔍 Building GraphQL integration
-  → Load: guides/backend/graphql.md (🟠)
+  → Load: skills/vtex-io-core/backend/clients.md (🔴)
 
 📱 Making layout responsive
-  → Load: guides/layout/responsive-layout.md (🟡)
+  → Load: skills/vtex-io-core/components/responsive-layout.md (🟡)
 
 🎨 Styling components
   → Reference: CSS Handles (cross-app styling)
@@ -337,16 +334,14 @@ Use this to identify which domain your task belongs to:
 | Grid, rows, columns, page structure | **Layout** | Start with flex-layout.md (🔴) |
 | Creating new custom blocks with React | **Components** | Start with custom-components.md (🔴) |
 | Using/customizing native VTEX blocks | **Components** | Load specific component guide (🟠/🟡) |
-| Accessing product/cart/runtime data | **Hooks** | Load specific hook guide (🟠/🟡) |
-| Creating custom hooks | **Hooks** | Load custom-hooks.md (🟡) |
+| Accessing product/cart/runtime data | **Contexts** | Load specific context guide (🟠/🟡) |
 | API calls, external services | **Backend** | Start with clients.md (🔴) |
-| GraphQL queries/mutations | **Backend** | Load graphql.md (🟠) |
-| Route handlers, validation | **Backend** | Load middlewares.md (🟡) |
+| Route handlers, validation | **Backend** | Start with services-api.md (🟡) |
 
 **Quick Domain Identification:**
 - Keywords: "layout", "grid", "row", "structure" → **Layout**
 - Keywords: "component", "block", "create", "custom" → **Components**
-- Keywords: "data", "fetch", "product", "cart", "hook" → **Hooks**
+- Keywords: "data", "fetch", "product", "cart", "orderform" → **Contexts**
 - Keywords: "API", "backend", "GraphQL", "client" → **Backend**
 
 ---
@@ -407,17 +402,17 @@ Validate if needed
 Task: "Create homepage banner component"
 → Domain: Components (custom block creation)
 → Trigger match: "create", "component"
-→ Load: guides/components/custom-components.md (🔴)
+→ Load: skills/vtex-io-core/components/custom-components.md (🔴)
 
 Task: "Build product listing with filters"
-→ Domain: Components
+→ Domain: Components (native blocks + composition)
 → Trigger match: "product", "listing", "filter"
-→ Load: guides/components/search-result.md (🟠)
+→ Load: skills/vtex-io-core/components/flex-layout.md (🔴), skills/vtex-io-core/components/product-summary.md (🟠)
 
 Task: "Fetch order history from API"
 → Domain: Backend
 → Trigger match: "fetch", "API"
-→ Load: guides/backend/clients.md (🔴)
+→ Load: skills/vtex-io-core/backend/clients.md (🔴)
 ```
 
 ---

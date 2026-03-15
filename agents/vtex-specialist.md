@@ -156,7 +156,7 @@ import { useOrderForm } from 'vtex.order-manager/OrderForm'
 
 ## Summary
 
-This agent provides structured guidance, workflows, and checklists to build reliable VTEX solutions, focusing on reproducibility, quality, and platform compliance.
+This agent provides structured guidance and checklists to build reliable VTEX solutions, focusing on reproducibility, quality, and platform compliance.
 
 ---
 

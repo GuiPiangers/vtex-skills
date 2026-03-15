@@ -10,7 +10,6 @@ This repo is intentionally **VTEX-focused**. It keeps only:
 
 - **1 Specialist Agent**: `vtex-specialist`
 - **VTEX skills** for Store Framework, IO apps, and platform integrations
-- **VTEX workflows** for common tasks (optional)
 
 ---
 
@@ -21,7 +20,6 @@ This repo is intentionally **VTEX-focused**. It keeps only:
 ├── ARCHITECTURE.md          # This file
 ├── agents/                  # VTEX-only agent(s)
 ├── skills/                  # VTEX knowledge modules
-├── workflows/               # VTEX slash commands (optional)
 └── rules/                   # Global rules
 ```
 
@@ -52,26 +50,6 @@ Only VTEX-relevant knowledge modules are kept.
 | Skill        | Description |
 | ------------ | ----------- |
 | `clean-code` | General code quality guidelines |
-
----
-
-## 🔄 Workflows (VTEX)
-
-VTEX-focused slash commands (use only when it helps).
-
-| Command          | Description              |
-| ---------------- | ------------------------ |
-| `/brainstorm`    | Socratic discovery       |
-| `/create`        | Create new features      |
-| `/debug`         | Debug issues             |
-| `/deploy`        | Deploy application       |
-| `/enhance`       | Improve existing code    |
-| `/orchestrate`   | Multi-agent coordination |
-| `/plan`          | Task breakdown           |
-| `/preview`       | Preview changes          |
-| `/status`        | Check project status     |
-| `/test`          | Run tests                |
-| `/ui-ux-pro-max` | Design with 50 styles    |
 
 ---
 

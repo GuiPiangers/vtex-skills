@@ -15,7 +15,12 @@ Load this guide when the task involves:
 - Wiring routes → middlewares in `node/index.ts`
 
 **Related guides:**
-- `skills/vtex-io-core/backend/clients.md` → for HTTP clients and external API calls
+- `skills/vtex-io-core/backend/clients.md` → VTEX client types, native clients, custom clients, `HttpClient` methods, `InstanceOptions`
+
+**Do we need more docs?**
+- **Clients**: covered by `skills/vtex-io-core/backend/clients.md`
+- **Server + routes + middlewares**: covered by this guide
+- Create extra docs only if you want deep dives (e.g., reusable middleware patterns), otherwise keep knowledge centralized here.
 
 ---
 
@@ -350,12 +355,32 @@ ctx.vtex.workspace
 // All injected clients
 ctx.clients.myClient
 
+// Share data across middlewares in the same request
+ctx.state.myValue = '...'
+
 // Request body (must parse manually for POST/PUT)
 const body = await json(ctx.req)
 
 // Set response
 ctx.status = 200
 ctx.body = { ... }
+```
+
+### Logging (recommended)
+
+Prefer VTEX logger utilities instead of `console.*` so logs are structured and searchable.
+
+```ts
+ctx.vtex.logger.info({ message: 'my-event', route: ctx.vtex.route.id })
+ctx.vtex.logger.warn({ message: 'unexpected-input', details: { /* ... */ } })
+ctx.vtex.logger.error({ message: 'integration-failed', error })
+```
+
+### Response headers (common)
+
+```ts
+ctx.set('Cache-Control', 'no-store')
+ctx.set('Content-Type', 'application/json')
 ```
 
 ---

@@ -87,13 +87,16 @@ yarn add @vtex/clients
 
 | Client | Import | Key Methods | Required Policy |
 |--------|--------|-------------|-----------------|
-| `Catalog` | `import { Catalog } from '@vtex/clients'` | `getSkuById`, `getSkuContext`, `getProductsAndSkus`, `getCategoryById`, `getBrandById`, `getSellerById` | — |
-| `OMS` | `import { OMS } from '@vtex/clients'` | `listOrders`, `userLastOrder`, `order`, `orderNotification`, `cancelOrder` | `OMSViewer` |
+| `Affiliate` | `import { Affiliate } from '@vtex/clients'` | `registerAffiliate`, `changeNotification`, `createSeller`, `getSellerList` | — |
+| `Catalog` | `import { Catalog } from '@vtex/clients'` | `getProductsAndSkus`, `getSkuById`, `getSellerById`, `getSkuContext`, `getCategoryById`, `getBrandById` | — |
 | `Checkout` | `import { Checkout } from '@vtex/clients'` | `getOrderFormConfiguration`, `setOrderFormConfiguration`, `setSingleCustomData` | — |
 | `Logistics` | `import { Logistics } from '@vtex/clients'` | `getDockById`, `pickupById`, `listPickupPoints`, `nearPickupPoints`, `shipping`, `listInventoryBySku` | — |
-| `RatesAndBenefits` | `import { RatesAndBenefits } from '@vtex/clients'` | `getAllBenefits`, `getPromotionById`, `createOrUpdatePromotion`, `createMultipleSkuPromotion` | `ADMIN_TOKEN` (default) |
-| `Affiliate` | `import { Affiliate } from '@vtex/clients'` | `registerAffiliate`, `changeNotification`, `createSeller`, `getSellerList` | — |
-| `Suggestions` | `import { Suggestions } from '@vtex/clients'` | `getAllSuggestions`, `getSuggestionById`, `sendSkuSuggestion`, `deleteSkuSuggestion` | — |
+| `OMS` | `import { OMS } from '@vtex/clients'` | `listOrders`, `userLastOrder`, `order`, `orderNotification`, `cancelOrder` | `OMSViewer` |
+| `OmsApiProxy` | `import { OmsApiProxy } from '@vtex/clients'` | `orders`, `orderFormId`, `customData`, `register` | `OMSViewer` |
+| `RatesAndBenefits` | `import { RatesAndBenefits } from '@vtex/clients'` | `getAllBenefits`, `getPromotionById`, `createOrUpdatePromotion`, `createMultipleSkuPromotion`, `updateMultipleSkuPromotion` | `ADMIN_TOKEN` (default) |
+| `Suggestions` | `import { Suggestions } from '@vtex/clients'` | `getAllSuggestions`, `getSuggestionById`, `getAllVersions`, `getVersionById`, `sendSkuSuggestion`, `deleteSkuSuggestion` | — |
+
+> Note: method availability can vary by `@vtex/clients` version. Prefer TypeScript types/IntelliSense as the source of truth and keep these lists as quick reminders.
 
 ### Available Factories
 
@@ -418,17 +421,22 @@ All custom clients (ExternalClient, JanusClient) expose `this.http` with these m
 |--------|------|-----|
 | `this.http.get<T>(url, config?)` | GET | Fetch a resource |
 | `this.http.getRaw<T>(url, config?)` | GET | Fetch with full response (headers, status) |
-| `this.http.post<T>(url, data, config?)` | POST | Create a resource |
+| `this.http.getWithBody<T>(url, data, config?)` | GET | GET with request body (only when required) |
+| `this.http.getBuffer(url, config?)` | GET | Fetch binary data (Buffer) |
+| `this.http.getStream(url, config?)` | GET | Fetch binary data (Stream) |
 | `this.http.put<T>(url, data, config?)` | PUT | Replace a resource |
+| `this.http.putRaw<T>(url, data, config?)` | PUT | PUT with full response (headers, status) |
+| `this.http.post<T>(url, data, config?)` | POST | Create a resource |
+| `this.http.postRaw<T>(url, data, config?)` | POST | POST with full response (headers, status) |
 | `this.http.patch<T>(url, data, config?)` | PATCH | Partial update |
 | `this.http.delete<T>(url, config?)` | DELETE | Remove a resource |
-| `this.http.getBuffer(url, config?)` | GET | Fetch binary data |
+| `this.http.head<T>(url, config?)` | HEAD | Fetch headers only |
 
 **Config options:**
 
 ```typescript
 {
-  metric: 'my-metric-name',  // Required for performance tracking
+  metric: 'my-metric-name',  // Strongly recommended (metrics/observability)
   params: { q: 'query' },    // URL query params (?q=query)
   headers: { ... },          // Per-request headers (merged with instance headers)
   timeout: 3000,             // Override instance timeout (ms)
@@ -458,11 +466,24 @@ constructor(context: IOContext, options?: InstanceOptions) {
 
 | Option | Type | Description |
 |--------|------|-------------|
-| `retries` | `number` | Retry count on network failure |
-| `timeout` | `number` | Milliseconds before request aborts |
+| `authType` | `string` | Auth strategy (when applicable) |
+| `baseURL` | `string` | Base URL for relative requests |
+| `concurrency` | `number` | Max concurrent requests |
+| `diskCache` | `any` | Disk-based cache |
+| `exponentialTimeoutCoefficient` | `number` | Timeout backoff coefficient (retries) |
+| `exponentialBackoffCoefficient` | `number` | Backoff coefficient (retries) |
 | `headers` | `object` | Default headers sent on every request |
+| `httpsAgent` | `any` | Custom HTTPS agent |
+| `initialBackoffDelay` | `number` | Initial backoff delay (ms) |
 | `memoryCache` | `LRUCache` | In-memory cache instance (from `node/index.ts`) |
-| `diskCache` | cache | Disk-based cache |
+| `middlewares` | `Array<(ctx, next) => Promise<void>>` | HttpClient middlewares |
+| `metrics` | `any` | Metrics configuration |
+| `name` | `string` | Client name (metrics/debugging) |
+| `params` | `object` | Default query params |
+| `retries` | `number` | Retry count |
+| `serverTimings` | `boolean` | Enable server-timing headers |
+| `timeout` | `number` | Milliseconds before request aborts |
+| `verbose` | `boolean` | Verbose logging |
 
 ---
 

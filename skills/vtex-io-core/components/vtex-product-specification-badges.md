@@ -1,21 +1,8 @@
 <!-- SCRAPED:START -->
 # VTEX Product Specification Badges
-
-[VTEX IO Apps](</docs/vtex-io-apps>)
-
-Store Framework
-
-[Product display](</docs/guides/product-display>)
-
-VTEX Product Specification Badges
-
-Official extension
-
-Version: 0.4.1
-
-Latest version: 0.4.1
-
-![{"base64":"  ","img":{"width":110,"height":20,"type":"svg","mime":"image/svg+xml","wUnits":"px","hUnits":"px","url":"https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square"}}](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Use this component to show badges based on your product specifications inside your product page.
 
@@ -23,25 +10,25 @@ Use this component to show badges based on your product specifications inside yo
 
 This component must be configured to be able to display the specifications properly. Its props can be configured via `blocks.json` and they are:
 
-Prop name| Type| Description| Default value  
----|---|---|---  
-`blockClass`| `string`| Allows to pass a custom name to be added to component css classes| `null`  
-`displayValue`| `SPECIFICATION_NAME` or `SPECIFICATION_VALUE` or `string`| Choose the value that will appear if the specification condition is met and the badge will be showed. Pass `SPECIFICATION_NAME` if you want to display the specification name. Pass `SPECIFICATION_VALUE` if you want to display its value. Pass any other custom string to display it.| `null`  
-`multipleValuesSeparator`| `string`| Define the separator string to be rendered when a specification value has multiple values.| `/`  
-`orientation`| `vertical` or `horizontal`| Determines if the group of specifications are showed horizontally or vertically| `vertical`  
-`specificationGroupName`| `String`| The name of the specification group in which the desired specifications are| `""`  
-`specificationName`| `String`| Pass the name of the specification you want to target. If left empy, will target all of the group| `""`  
-`specificationsOptions`| `Array<Option>`| Pass this if you want to control the conditions to show certain specifications. Each value of the array should be a valid object of the `Option` format.| `null`  
-`visibleWhen`| `String`| Pass this if you want the specification to be displayed only if it has this exact value. If left empty, the badge will be showed regardless of the specification value.| `""`  
-  
+| Prop name                     | Type                                                      | Description                                                                                                                                                                                                                                                                             | Default value |
+| ----------------------------- | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| `blockClass`                  | `string`                                                  | Allows to pass a custom name to be added to component css classes                                                                                                                                                                                                                       | `null`        |
+| `displayValue`                | `SPECIFICATION_NAME` or `SPECIFICATION_VALUE` or `string` | Choose the value that will appear if the specification condition is met and the badge will be showed. Pass `SPECIFICATION_NAME` if you want to display the specification name. Pass `SPECIFICATION_VALUE` if you want to display its value. Pass any other custom string to display it. | `null`        |
+| `multipleValuesSeparator` | `string`                                                  | Define the separator string to be rendered when a specification value has multiple values.                                                                                                                                                                                              | `/`           |
+| `orientation`                 | `vertical` or `horizontal`                                | Determines if the group of specifications are showed horizontally or vertically                                                                                                                                                                                                         | `vertical`    |
+| `specificationGroupName`      | `String`                                                  | The name of the specification group in which the desired specifications are                                                                                                                                                                                                             | `""`          |
+| `specificationName`           | `String`                                                  | Pass the name of the specification you want to target. If left empy, will target all of the group                                                                                                                                                                                       | `""`          |
+| `specificationsOptions`       | `Array<Option>`                                           | Pass this if you want to control the conditions to show certain specifications. Each value of the array should be a valid object of the `Option` format.                                                                                                                                | `null`        |
+| `visibleWhen`                 | `String`                                                  | Pass this if you want the specification to be displayed only if it has this exact value. If left empty, the badge will be showed regardless of the specification value.                                                                                                                 | `""`          |
+
 `Option` type:
 
-Prop name| Type| Description| Default value  
----|---|---|---  
-`displayValue`| `SPECIFICATION_NAME` or `SPECIFICATION_VALUE` or `string`| Choose the value that will appear if the option condition is met and the badge will be showed. Pass `SPECIFICATION_NAME` if you want to show the specification name. Pass `SPECIFICATION_VALUE` if you want to show its value. Pass any other custom string to show it.| `null`  
-`specificationName`| `String`| Pass the name of the specification you want to target. If empty, option will not be checked.| `""`  
-`visibleWhen`| `string`| Pass this if you want this option to be applied when the specification has the exactly same value as specified in `visibleWhen`. If left empty, the badge will be showed regardless of the specification value.| `null`  
-  
+| Prop name           | Type                                                      | Description                                                                                                                                                                                                                                                             | Default value |
+| ------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| `displayValue`      | `SPECIFICATION_NAME` or `SPECIFICATION_VALUE` or `string` | Choose the value that will appear if the option condition is met and the badge will be showed. Pass `SPECIFICATION_NAME` if you want to show the specification name. Pass `SPECIFICATION_VALUE` if you want to show its value. Pass any other custom string to show it. | `null`        |
+| `specificationName` | `String`                                                  | Pass the name of the specification you want to target. If empty, option will not be checked.                                                                                                                                                                            | `""`          |
+| `visibleWhen`       | `string`                                                  | Pass this if you want this option to be applied when the specification has the exactly same value as specified in `visibleWhen`. If left empty, the badge will be showed regardless of the specification value.                                                         | `null`        |
+
 **Important note:**
 
 All products come with a default `allSpecifications` group, that is a group that combines all specifications in your product. If you manually create another group and add a specification in it, this specification will also appear in the `allSpecifications` group. So, if you want to apply your conditions to all specification, regardless of group, you must pass the value `allSpecifications`.
@@ -50,8 +37,7 @@ All products come with a default `allSpecifications` group, that is a group that
 
 Let's say your product has this specification groups:
 
-
-```
+```json
 // specificationGroups array
 [
   {
@@ -96,11 +82,9 @@ Let's say your product has this specification groups:
 ]
 ```
 
-
 If you want to display all specifications with the value `True`, you could then pass:
 
-
-```
+```json
 "product-specification-badges": {
     "props": {
       "specificationGroupName": "allSpecifications",
@@ -110,16 +94,14 @@ If you want to display all specifications with the value `True`, you could then 
   },
 ```
 
-
 In this case, it will appear the `On Sale` and `Demo` badges (because you passed the `SPECIFICATION_NAME` in `displayValue`).
 
 ### Example 2
 
 Using the specification groups from example 1, we can get the same result with the specificationOptions prop:
 
-
-```
-"product-specification-badges": {
+```json
+  "product-specification-badges": {
     "props": {
       "specificationGroupName": "allSpecifications",
       "specificationsOptions": [{
@@ -136,11 +118,9 @@ Using the specification groups from example 1, we can get the same result with t
   },
 ```
 
-
 ### Example 3
 
-
-```
+```json
 // specificationGroups array
 [
   {
@@ -185,12 +165,10 @@ Using the specification groups from example 1, we can get the same result with t
 ]
 ```
 
-
 If you want to show the value for the `Demo` specification, you could pass:
 
-
-```
-"product-specification-badges": {
+```json
+  "product-specification-badges": {
     "props": {
       "specificationGroupName": "allSpecifications",
       "specificationsOptions": [{
@@ -206,7 +184,6 @@ If you want to show the value for the `Demo` specification, you could pass:
   },
 ```
 
-
 Final result: will appear the `On Sale` badge and a badge with `My Cool Value`.
 
 Note the use of `SPECIFICATION_VALUE` in `displayValue` and the lack of `visibleWhen` in `Demo`.
@@ -217,9 +194,8 @@ Using the example given in example 3.
 
 To show a custom string you could do:
 
-
-```
-"product-specification-badges": {
+```json
+  "product-specification-badges": {
     "props": {
       "specificationGroupName": "allSpecifications",
       "specificationsOptions": [{
@@ -239,7 +215,6 @@ To show a custom string you could do:
   },
 ```
 
-
 Final result: will appear the `On Sale` badge, a badge with `My Cool Value` and a badge with the string `Cool Promo`.
 
 Note the usage of a custom value in the `displayValue` config.
@@ -248,14 +223,14 @@ Note the usage of a custom value in the `displayValue` config.
 
 You can use our `stack-layout` to show the badges over your product image for example.
 
-
-```
-"stack-layout": {
+```json
+  "stack-layout": {
     "children": [
       "product-images",
       "product-specification-badges"
     ]
   },
+
   "product-specification-badges": {
     "props": {
       "specificationGroupName": "allSpecifications",
@@ -269,16 +244,30 @@ You can use our `stack-layout` to show the badges over your product image for ex
   },
 ```
 
-
 ### CSS API
 
-CSS class| Description  
----|---  
-`groupContainer`| Container that wrapps the whole badge group  
-`badgeContainer`| Container for each badge  
-`badgeText`| Text displayed inside badge  
-  
-Note: each badge receives a class `badgeContainer` with its specification name slug appended to it. Example: with the specification `On Sale: true` the badge will also have the class `badgeContainer--on-sale`.
+| CSS class        | Description                                 |
+| ---------------- | ------------------------------------------- |
+| `groupContainer` | Container that wrapps the whole badge group |
+| `badgeContainer` | Container for each badge                    |
+| `badgeText`      | Text displayed inside badge                 |
 
-Note: each badge receives a class `badgeText` with its specification value slug appended to it. Example: with the specification `Nationality: Brazilian` the badge will also have the class `badgeText--brazilian`.
+Note: each badge receives a class `badgeContainer` with its specification name slug appended to it.
+Example: with the specification `On Sale: true` the badge will also have the class `badgeContainer--on-sale`.
+
+Note: each badge receives a class `badgeText` with its specification value slug appended to it.
+Example: with the specification `Nationality: Brazilian` the badge will also have the class `badgeText--brazilian`.
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 <!-- SCRAPED:END -->

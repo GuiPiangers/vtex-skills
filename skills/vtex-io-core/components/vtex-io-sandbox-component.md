@@ -1,29 +1,22 @@
 <!-- SCRAPED:START -->
 # VTEX IO Sandbox Component
 
-[VTEX IO Apps](</docs/vtex-io-apps>)
-
-Store Framework
-
-[Layout and interaction patterns](</docs/guides/layout-and-interacion-patterns>)
-
-VTEX IO Sandbox Component
-
-Official extension
-
-Version: 0.5.1
-
-Latest version: 0.5.1
-
-![{"base64":"  ","img":{"width":110,"height":20,"type":"svg","mime":"image/svg+xml","wUnits":"px","hUnits":"px","url":"https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square"}}](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)
-
 Allows mounting arbitrary HTML content in extension points from the comfort and safety of an iframe.
+
+## Usage
+
+To use this app, you need to include it in your `manifest.json` dependencies.
+
+```json
+  "dependencies": {
+    "vtex.sandbox": "0.x"
+  }
+```
 
 ### Example block
 
-
 ```
-"sandbox.product": {
+  "sandbox.product": {
     "props": {
       "width": "200px",
       "height": "60px",

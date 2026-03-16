@@ -2,65 +2,44 @@
 
 <!-- SCRAPED:START -->
 # Responsive Layout
-
-[VTEX IO Apps](</docs/vtex-io-apps>)
-
-Store Framework
-
-[Layout and interaction patterns](</docs/guides/layout-and-interacion-patterns>)
-
-Responsive Layout
-
-Official extension
-
-Version: 0.1.4
-
-Latest version: 0.1.4
-
-![{"base64":"  ","img":{"width":110,"height":20,"type":"svg","mime":"image/svg+xml","wUnits":"px","hUnits":"px","url":"https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square"}}](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Responsive Layout allows you to declare layout structures that will only be rendered in a specific screen-size breakpoint.
 
-![{"base64":"  ","img":{"width":2840,"height":1428,"type":"gif","mime":"image/gif","wUnits":"px","hUnits":"px","length":1208072,"url":"https://cdn.jsdelivr.net/gh/vtexdocs/dev-portal-content@main/images/vtex-responsive-layout-0.gif"}}](https://cdn.jsdelivr.net/gh/vtexdocs/dev-portal-content@main/images/vtex-responsive-layout-0.gif)
+![responsive-layout-gif](https://cdn.jsdelivr.net/gh/vtexdocs/dev-portal-content@main/images/vtex-responsive-layout-0.gif)
 
 This app defines and exports four blocks:
 
-  * `responsive-layout.desktop`
-  * `responsive-layout.mobile`
-  * `responsive-layout.tablet`
-  * `responsive-layout.phone`
-
-
+- `responsive-layout.desktop`
+- `responsive-layout.mobile`
+- `responsive-layout.tablet`
+- `responsive-layout.phone`
 
 Each block has `composition: children`, which means that it expects to receive an array of `children` blocks for rendering if the current screen-size is right for its breakpoint.
 
 ## Configuration
 
-  1. Import the Responsive Layout app to your theme dependencies in the `manifest.json`. For example:
+1. Import the Responsive Layout app to your theme dependencies in the `manifest.json`. For example:
 
-
-
-
-```
-"dependencies": {
+```json
+  "dependencies": {
     "vtex.responsive-layout": "0.x"
   }
 ```
 
+2. Add the `responsive-layout` block to your theme. For example:
 
-  2. Add the `responsive-layout` block to your theme. For example:
-
-
-
-
-```
-"store.custom#about-us": {
+```json
+  "store.custom#about-us": {
     "blocks": [
       "responsive-layout.desktop",
       "responsive-layout.tablet",
       "responsive-layout.phone"
     ]
   },
+
   "responsive-layout.desktop": {
     "children": ["rich-text#desktop"]
   },
@@ -70,6 +49,7 @@ Each block has `composition: children`, which means that it expects to receive a
   "responsive-layout.phone": {
     "children": ["rich-text#phone"]
   },
+
   "rich-text#desktop": {
     "props": {
       "text": "# This will only show up on desktop.",
@@ -90,8 +70,26 @@ Each block has `composition: children`, which means that it expects to receive a
   },
 ```
 
-
 Note that you could use _any_ array of blocks as `children`, given that they are allowed by the `block` that is directly above `responsive-layout`.
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="http://gabenna.io"><img src="https://avatars1.githubusercontent.com/u/4580524?v=4" width="100px;" alt=""/><br /><sub><b>Micael Pereira</b></sub></a><br /><a href="https://github.com/vtex-apps/responsive-layout/commits?author=micas06gua" title="Documentation">📖</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 <!-- SCRAPED:END -->
 
 ## Mandatory Team Rule: Avoid `responsive-layout.tablet`
@@ -137,4 +135,5 @@ Use Responsive Layout when you truly need different children blocks per breakpoi
 - Only `desktop` + `mobile` declared by default.
 - No `responsive-layout.tablet` unless explicitly justified.
 - Mobile tree is intentionally simpler when possible.
+
 

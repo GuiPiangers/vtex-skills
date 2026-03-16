@@ -75,37 +75,41 @@ mystore.telemarketing.css
 
 **Rule:** Always use the exact vendor and app name from the app's `manifest.json`.
 
+**Critical:** If the CSS filename does not match `{vendor}.{app-name}.css`, VTEX won’t associate your rules with that app’s CSS Handles and the styles won’t be applied.
+
 ---
 
 ## 🎨 CSS HANDLES SYNTAX
 
-### Basic Handle
+### Basic Handle (recommended)
 
 ```css
-.{vendor}-{app}-{major-version}-x-{handle} {
+.{handle} {
   /* styles */
 }
 ```
 
-### Real Example
+### Real Example (`styles/css/vtex.flex-layout.css`)
 
 ```css
-/* Styling flex-layout handles */
-.vtex-flex-layout-0-x-flexRow {
+/* VTEX adds the vendor/app/version prefix during build/link */
+.flexRow {
   display: flex;
   gap: 1rem;
 }
 
-.vtex-flex-layout-0-x-flexCol {
+.flexCol {
   padding: 1rem;
 }
 ```
+
+**Important:** The handle-only selectors (`.flexRow`, `.flexCol`, etc.) must live in the matching file (`vtex.flex-layout.css`). The CSS filename is what scopes the handles to a specific app.
 
 ### How Handles Work
 
 1. Component declares handle: `useCssHandles(['container'])`
 2. DOM renders as: `<div class="vtex-myapp-1-x-container">`
-3. You style it: `.vtex-myapp-1-x-container { }`
+3. In `styles/css/{vendor}.{app}.css`, you style it as: `.container { }` (do **not** write the `vtex-myapp-1-x-` prefix)
 
 ---
 
@@ -131,12 +135,12 @@ A **custom identifier** added to blocks for specific styling.
 
 ```css
 /* Base handle */
-.vtex-flex-layout-0-x-flexRow {
+.flexRow {
   /* Applies to ALL flex rows */
 }
 
 /* With blockClass modifier */
-.vtex-flex-layout-0-x-flexRow--main-header {
+.flexRow--main-header {
   /* Applies ONLY to rows with blockClass="main-header" */
   background: #000;
   padding: 2rem;
@@ -150,38 +154,42 @@ A **custom identifier** added to blocks for specific styling.
 ## 📋 COMMON CSS HANDLES BY COMPONENT
 
 ### flex-layout
+File: `styles/css/**/vtex.flex-layout.css`
 
 ```css
-.vtex-flex-layout-0-x-flexRow { }
-.vtex-flex-layout-0-x-flexRowContent { }
-.vtex-flex-layout-0-x-flexCol { }
-.vtex-flex-layout-0-x-flexColChild { }
+.flexRow { }
+.flexRowContent { }
+.flexCol { }
+.flexColChild { }
 ```
 
 ### store-components
+File: `styles/css/**/vtex.store-components.css`
 
 ```css
-.vtex-store-components-3-x-container { }
-.vtex-store-components-3-x-productBrand { }
-.vtex-store-components-3-x-productName { }
-.vtex-store-components-3-x-productPrice { }
+.container { }
+.productBrand { }
+.productName { }
+.productPrice { }
 ```
 
 ### product-summary
+File: `styles/css/**/vtex.product-summary.css`
 
 ```css
-.vtex-product-summary-2-x-container { }
-.vtex-product-summary-2-x-element { }
-.vtex-product-summary-2-x-image { }
-.vtex-product-summary-2-x-nameContainer { }
+.container { }
+.element { }
+.image { }
+.nameContainer { }
 ```
 
 ### menu
+File: `styles/css/**/vtex.menu.css`
 
 ```css
-.vtex-menu-2-x-container { }
-.vtex-menu-2-x-menuItem { }
-.vtex-menu-2-x-menuContainer { }
+.container { }
+.menuItem { }
+.menuContainer { }
 ```
 
 **Note:** Check each app's documentation or component source code for complete handle list.
@@ -190,51 +198,84 @@ A **custom identifier** added to blocks for specific styling.
 
 ## 🚫 CSS SELECTOR RESTRICTIONS
 
-### Allowed Selectors
+Customization using CSS selectors is mostly deprecated.
+
+The following selectors are the only ones allowed for store customization:
 
 ```css
 /* ✅ Class selectors */
-.vtex-flex-layout-0-x-flexRow { }
+.foo { }
 
 /* ✅ Pseudo-classes */
-.vtex-menu-2-x-menuItem:hover { }
-.vtex-store-components-3-x-container:first-child { }
+.foo:hover { }
+.foo:visited { }
+.foo:active { }
+.foo:disabled { }
+.foo:focus { }
+:local(.foo) { }
+.foo:empty { }
+.foo:target { }
+
+/* ✅ :not() */
+.foo:not(.bar) { }
+
+/* ✅ First/last child */
+.foo:first-child { }
+.foo:last-child { }
+
+/* ✅ nth-child */
+.foo:nth-child(even) { }
+.foo:nth-child(odd) { }
+.foo:nth-child(2n) { }
+.foo:nth-child(4n) { }
 
 /* ✅ Pseudo-elements */
-.vtex-product-summary-2-x-nameContainer::before { }
+.foo::before { }
+.foo::after { }
+.foo::placeholder { }
 
-/* ✅ Descendant combinators */
-.vtex-flex-layout-0-x-flexRow .vtex-product-summary-2-x-container { }
+/* ✅ Space combinator (descendant) */
+.foo .bar { }
 
-/* ✅ Child combinators */
-.vtex-flex-layout-0-x-flexRow > .vtex-flex-layout-0-x-flexCol { }
+/* ✅ data-* attributes */
+[data-testid] { }
+[data-my-attr="value"] { }
 
-/* ✅ Attribute selectors (on CSS Handles only) */
-.vtex-menu-2-x-menuItem[class*="--active"] { }
+/* ✅ Cross-app targeting (elements from other apps) */
+:global(.vtex-{AppName}-{AppVersion}-x-{handle}) { }
+
+/* ✅ Media queries */
+@media (max-width: 768px) {
+  .foo { }
+}
+@media (prefers-reduced-motion: reduce) {
+  .foo { transition: none; }
+}
 ```
 
-### Forbidden Selectors
+CSS selectors that are not included in this list aren't supported. Using them can cause issues like app linking failure.
 
 ```css
-/* ❌ Tag selectors */
+/* ❌ Tag selectors / IDs / universal selector */
 div { }
-span { }
-a { }
-
-/* ❌ ID selectors */
 #header { }
-
-/* ❌ Universal selector */
 * { }
 
-/* ❌ Direct tag + class */
-div.vtex-flex-layout-0-x-flexRow { }
+/* ❌ Child combinator */
+.foo > .bar { }
 
-/* ❌ Attribute selectors on non-CSS-Handle classes */
-[data-attribute="value"] { }
+/* ❌ Attribute selectors outside [data-*] */
+[alt="bar"] { }
+
+/* ❌ Unsupported nth-child variants */
+.foo:nth-child(2) { }
+
+/* ❌ Other unsupported combinators/selectors */
+.foo + .bar { }
+.foo ~ .bar { }
 ```
 
-**Rule:** Only use class selectors based on CSS Handles. No direct tag or ID styling.
+**Rule:** Prefer styling via CSS Handles + `blockClass`, inside the correct `styles/css/{vendor}.{app}.css` file.
 
 ---
 
@@ -244,12 +285,12 @@ div.vtex-flex-layout-0-x-flexRow { }
 
 ```css
 /* ❌ Bad */
-.vtex-flex-layout-0-x-flexRow {
+.flexRow {
   padding: 2rem !important;
 }
 
 /* ✅ Good - Use specificity instead */
-.vtex-flex-layout-0-x-flexRow--header {
+.flexRow--header {
   padding: 2rem;
 }
 ```
@@ -269,16 +310,16 @@ div.vtex-flex-layout-0-x-flexRow { }
 
 ```css
 /* Low specificity */
-.vtex-flex-layout-0-x-flexRow { }
+.flexRow { }
 
 /* Medium specificity - with blockClass */
-.vtex-flex-layout-0-x-flexRow--header { }
+.flexRow--header { }
 
-/* High specificity - parent + blockClass */
-.vtex-store-components-3-x-container .vtex-flex-layout-0-x-flexRow--header { }
+/* High specificity - descendant */
+.flexRow--header .flexCol { }
 
 /* Higher specificity - pseudo-class */
-.vtex-flex-layout-0-x-flexRow--header:not(.vtex-flex-layout-0-x-flexRow--mobile) { }
+.flexRow--header:not(.flexRow--mobile) { }
 ```
 
 ---
@@ -289,14 +330,14 @@ div.vtex-flex-layout-0-x-flexRow { }
 
 ```css
 /* Base (mobile) */
-.vtex-flex-layout-0-x-flexRow {
+.flexRow {
   flex-direction: column;
   gap: 1rem;
 }
 
 /* Tablet */
 @media screen and (min-width: 768px) {
-  .vtex-flex-layout-0-x-flexRow {
+  .flexRow {
     flex-direction: row;
     gap: 2rem;
   }
@@ -304,7 +345,7 @@ div.vtex-flex-layout-0-x-flexRow { }
 
 /* Desktop */
 @media screen and (min-width: 1024px) {
-  .vtex-flex-layout-0-x-flexRow {
+  .flexRow {
     gap: 3rem;
   }
 }
@@ -339,7 +380,7 @@ div.vtex-flex-layout-0-x-flexRow { }
 
 **CSS (styles/css/home/vtex.flex-layout.css):**
 ```css
-.vtex-flex-layout-0-x-flexRow--product-grid {
+.flexRow--product-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
@@ -347,7 +388,7 @@ div.vtex-flex-layout-0-x-flexRow { }
 }
 
 @media screen and (max-width: 768px) {
-  .vtex-flex-layout-0-x-flexRow--product-grid {
+  .flexRow--product-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
@@ -371,13 +412,13 @@ div.vtex-flex-layout-0-x-flexRow { }
 
 **CSS (styles/css/header/vtex.flex-layout.css):**
 ```css
-.vtex-flex-layout-0-x-flexRow--main-header {
+.flexRow--main-header {
   background: linear-gradient(to right, #000, #333);
   padding: 1.5rem 2rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.vtex-flex-layout-0-x-flexRow--main-header .vtex-flex-layout-0-x-flexCol {
+.flexRow--main-header .flexCol {
   align-items: center;
 }
 ```
@@ -388,22 +429,22 @@ div.vtex-flex-layout-0-x-flexRow { }
 
 **CSS (styles/css/pdp/vtex.product-summary.css):**
 ```css
-.vtex-product-summary-2-x-container {
+.container {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border-radius: 8px;
   overflow: hidden;
 }
 
-.vtex-product-summary-2-x-container:hover {
+.container:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 16px rgba(0,0,0,0.15);
 }
 
-.vtex-product-summary-2-x-image {
+.image {
   transition: transform 0.3s ease;
 }
 
-.vtex-product-summary-2-x-container:hover .vtex-product-summary-2-x-image {
+.container:hover .image {
   transform: scale(1.05);
 }
 ```
@@ -431,7 +472,7 @@ const handles = useCssHandles(CSS_HANDLES)
 
 **CSS (styles/css/home/mystore.custom-banner.css):**
 ```css
-.mystore-custom-banner-1-x-banner--hero {
+.banner--hero {
   position: relative;
   min-height: 500px;
   display: flex;
@@ -440,14 +481,14 @@ const handles = useCssHandles(CSS_HANDLES)
   background: url('/assets/hero-bg.jpg') center/cover;
 }
 
-.mystore-custom-banner-1-x-title--hero {
+.title--hero {
   font-size: 3rem;
   font-weight: bold;
   color: white;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
-.mystore-custom-banner-1-x-cta--hero {
+.cta--hero {
   padding: 1rem 2rem;
   background: #ff0000;
   color: white;
@@ -457,7 +498,7 @@ const handles = useCssHandles(CSS_HANDLES)
   transition: background 0.3s ease;
 }
 
-.mystore-custom-banner-1-x-cta--hero:hover {
+.cta--hero:hover {
   background: #cc0000;
 }
 ```
@@ -494,7 +535,7 @@ const CSS_HANDLES = ['container', 'title', 'image']
 ✓ Follow naming convention: {vendor}.{app}.css
 ✓ Avoid !important (use specificity instead)
 ✓ Use mobile-first responsive approach
-✓ Keep selectors based on CSS Handles only
+✓ Keep selectors based on CSS Handles (and allowed selectors only)
 ✓ Use semantic blockClass names
 ✓ Document complex selectors with comments
 ```
@@ -508,7 +549,7 @@ const CSS_HANDLES = ['container', 'title', 'image']
 ❌ Using tag selectors (div, span, a)
 ❌ Using ID selectors (#header)
 ❌ Excessive !important usage
-❌ Direct attribute selectors on non-handles
+❌ Attribute selectors outside [data-*]
 ❌ Universal selector (*)
 ❌ Inline styles in JSON blocks
 ❌ CSS files outside /styles/css/
@@ -551,8 +592,12 @@ Example: styles/css/header/vtex.flex-layout.css
 
 ### 5. Write CSS
 ```css
-.{vendor}-{app}-{version}-x-{handle} { }
-.{vendor}-{app}-{version}-x-{handle}--{blockClass} { }
+/* In styles/css/{vendor}.{app}.css */
+.{handle} { }
+.{handle}--{blockClass} { }
+
+/* If you must target elements from a different app */
+:global(.vtex-{AppName}-{AppVersion}-x-{handle}) { }
 ```
 
 ### 6. Test

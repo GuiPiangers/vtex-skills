@@ -1,7 +1,6 @@
 ---
 name: vtex-io-core
 description: Central VTEX IO knowledge system. Defines architectural standards, block behaviors, frontend patterns, React custom components, hooks, and VTEX backend (clients, middlewares, routes). This is not documentation — it's operational intelligence.
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 
 # VTEX IO CORE SKILL

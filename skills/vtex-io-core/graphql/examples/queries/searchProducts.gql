@@ -1,0 +1,49 @@
+#import "../fragments/product.gql"
+#import "../fragments/item.gql"
+#import "../fragments/seller.gql"
+#import "../fragments/commertialOffer.gql"
+#import "../fragments/installment.gql"
+
+query productSearch (
+    $fullText: String
+    $from: Int
+    $to: Int
+    $skusFilter: ItemsFilter = ALL_AVAILABLE
+    $installmentCriteria: InstallmentsCriteria = MAX_WITHOUT_INTEREST
+    $excludedPaymentSystems: [String]
+    $includedPaymentSystems: [String]
+  ) {
+  productSearch (
+    fullText: $fullText
+    from: $from
+    to: $to
+  )
+    @context(provider: "vtex.search-graphql") {
+      products {
+        ...ProductFragment
+        items(filter: $skusFilter) {
+          ...ItemFragment
+          sellers {
+            ...SellerFragment
+            commertialOffer {
+              ...CommertialOfferFragment
+              Installments(
+                criteria: $installmentCriteria
+                excludedPaymentSystems: $excludedPaymentSystems
+                includedPaymentSystems: $includedPaymentSystems
+              ) {
+                ...InstallmentFragment
+              }
+            }
+          }
+        }
+        selectedProperties {
+          key
+          value
+        }
+        rule {
+          id
+        }
+      }
+    }
+}

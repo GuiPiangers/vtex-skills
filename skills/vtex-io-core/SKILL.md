@@ -112,6 +112,8 @@ Agent reasoning:
 | `skills/vtex-io-core/contexts/product-context.md` | 🟠 HIGH | product data, PDP, product info, product context | Product information and SKU selection state |
 | `skills/vtex-io-core/contexts/useOrderForm.md` | 🟠 HIGH | cart, orderform, checkout, add to cart | Cart management via OrderForm |
 | `skills/vtex-io-core/contexts/useRuntime.md` | 🟡 MEDIUM | route, navigation, query params, runtime | Runtime route/navigation context |
+| **GraphQL** ||||
+| `skills/vtex-io-core/graphql/graphql.md` | 🟠 HIGH | graphql, apollo, react-apollo, useQuery, useMutation, gql, provider, search-graphql | Consume VTEX GraphQL APIs from React components |
 | **Backend** ||||
 | `skills/vtex-io-core/backend/services-api.md` | 🟡 **CRITICAL** | services, route handler, middleware, validation, API | Request handling |
 | `skills/vtex-io-core/backend/clients.md` | 🔴 **CRITICAL** | API call, HTTP request, external API, fetch, clients | HTTP clients |

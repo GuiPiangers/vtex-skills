@@ -2,8 +2,6 @@ import os
 import sys
 import re
 import requests
-from bs4 import BeautifulSoup
-import html2text
 
 # ---------------------------------------------------------------------------
 # Marcadores de seção gerenciada pelo scraping
@@ -11,156 +9,141 @@ import html2text
 SCRAPE_START = "<!-- SCRAPED:START -->"
 SCRAPE_END   = "<!-- SCRAPED:END -->"
 
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'
+}
 
-def fetch_page(url):
-    """Realiza a requisição para a página e retorna o HTML parsed."""
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'
-    }
+
+# ---------------------------------------------------------------------------
+# GitHub README fetch
+# ---------------------------------------------------------------------------
+
+def build_raw_url(github_url: str) -> str | None:
+    """
+    Converte uma URL do GitHub em URL raw para download direto.
+
+    Suporta:
+      https://github.com/vtex-apps/flex-layout
+      https://github.com/vtex-apps/flex-layout/blob/master/docs/README.md
+      https://raw.githubusercontent.com/...  (retorna sem alteração)
+
+    Retorna None se a URL apontar apenas para o repo raiz
+    (nesse caso fetch_readme tentará os caminhos padrão).
+    """
+    if 'raw.githubusercontent.com' in github_url:
+        return github_url
+
+    match = re.match(r'https://github\.com/([^/]+/[^/]+)', github_url)
+    if not match:
+        raise ValueError(f"URL GitHub inválida: {github_url}")
+
+    # Se a URL aponta para um arquivo específico (blob ou tree)
+    file_match = re.search(r'/(?:blob|tree)/([^/]+)/(.+)', github_url)
+    if file_match:
+        branch    = file_match.group(1)
+        file_path = file_match.group(2)
+        repo_path = match.group(1)
+        return f"https://raw.githubusercontent.com/{repo_path}/{branch}/{file_path}"
+
+    # URL apenas do repo — fetch_readme fará o fallback
+    return None
+
+
+def fetch_readme(github_url: str) -> tuple[str, str] | None:
+    """
+    Busca o README.md de um repositório GitHub.
+
+    Tenta os caminhos e branches mais comuns nos vtex-apps, com fallback:
+      master/README.md → master/docs/README.md → main/README.md → main/docs/README.md
+
+    Retorna (titulo, conteudo_markdown) ou None se não encontrar.
+    """
+    raw_url = build_raw_url(github_url)
+    if raw_url:
+        return _fetch_raw(raw_url, github_url)
+
+    match = re.match(r'https://github\.com/([^/]+)/([^/]+)', github_url)
+    if not match:
+        print(f"  [Erro] URL inválida: {github_url}")
+        return None
+
+    owner, repo = match.group(1), match.group(2)
+
+    candidates = [
+        (branch, path)
+        for branch in ['master', 'main']
+        for path in ['README.md', 'docs/README.md']
+    ]
+
+    for branch, path in candidates:
+        url    = f"https://raw.githubusercontent.com/{owner}/{repo}/{branch}/{path}"
+        result = _fetch_raw(url, github_url)
+        if result:
+            return result
+
+    print(f"  [Erro] README não encontrado para {github_url}")
+    return None
+
+
+def _fetch_raw(raw_url: str, original_url: str) -> tuple[str, str] | None:
+    """Faz o request para a URL raw e retorna (titulo, conteudo) ou None."""
     try:
-        response = requests.get(url, headers=headers)
+        response = requests.get(raw_url, headers=HEADERS, timeout=15)
+        if response.status_code == 404:
+            return None
         response.raise_for_status()
-        return BeautifulSoup(response.content, 'html.parser')
+
+        content = response.text
+        title   = extract_title_from_markdown(content, original_url)
+        return (title, content)
+
     except requests.RequestException as e:
-        print(f"Erro ao acessar {url}: {e}")
+        print(f"  [Erro] {raw_url}: {e}")
         return None
 
 
-def extract_links(soup, base_url="https://developers.vtex.com"):
-    """Extrai os links dos elementos `a` dentro da classe especificada."""
-    links = []
-    containers = soup.select('.styles_flexWrap.css-4cffwv')
+def extract_title_from_markdown(content: str, fallback_url: str) -> str:
+    """
+    Extrai o título do README a partir do primeiro H1 (`# Título`).
+    Fallback: nome do repositório extraído da URL.
+    """
+    for line in content.splitlines():
+        stripped = line.strip()
+        if stripped.startswith('# '):
+            return stripped[2:].strip()
 
-    if not containers:
-        print("Aviso: Nenhum container com a classe 'styles_flexWrap css-4cffwv' encontrado.")
-        return links
+    match = re.search(r'github\.com/[^/]+/([^/]+)', fallback_url)
+    if match:
+        return match.group(1).replace('-', ' ').title()
 
-    for container in containers:
-        anchors = container.find_all('a')
-        for a in anchors:
-            href = a.get('href')
-            if href:
-                if href.startswith('/'):
-                    href = base_url + href
-                links.append(href)
-
-    return list(dict.fromkeys(links))
+    return 'Unknown Component'
 
 
-def format_filename(title):
+# ---------------------------------------------------------------------------
+# Filename
+# ---------------------------------------------------------------------------
+
+def format_filename(title: str) -> str:
     """Formata o título para ser usado como nome de arquivo (slugify)."""
     filename = re.sub(r'[^\w\s-]', '', title).strip().lower()
     filename = re.sub(r'[-\s]+', '-', filename)
     return f"{filename}.md"
 
 
-def extract_code_lines(code_scroll_parent):
-    """
-    Extrai as linhas de código do bloco VTEX corretamente.
-
-    Estrutura real do HTML da VTEX:
-      .ch-code-scroll-parent  (contém data-ch-lang)
-        └── .ch-code-scroll-content
-              └── div  (container absoluto com todas as linhas)
-                    ├── span.ch-code-line-number  "1"
-                    ├── div  →  conteúdo da linha 1
-                    ├── span.ch-code-line-number  "2"
-                    ├── div  →  conteúdo da linha 2
-                    ...
-
-    Cada div de conteúdo possui um div interno inline-block com spans coloridos.
-    As linhas reais são os divs que NÃO são .ch-code-line-number.
-    """
-    scroll_content = code_scroll_parent.select_one('.ch-code-scroll-content')
-    if not scroll_content:
-        # Fallback: tenta extração simples removendo números de linha
-        for ln in code_scroll_parent.select('.ch-code-line-number'):
-            ln.extract()
-        return code_scroll_parent.get_text(separator='\n')
-
-    # O container absoluto com todas as linhas intercaladas
-    container = scroll_content.find('div')
-    if not container:
-        return ''
-
-    lines = []
-    for child in container.children:
-        if not hasattr(child, 'name'):
-            continue
-        # Pula os números de linha
-        if 'ch-code-line-number' in (child.get('class') or []):
-            continue
-        # Cada div restante é uma linha de código
-        line_text = child.get_text()
-        # Trata \n escapado literalmente (comum na VTEX docs)
-        line_text = line_text.replace('\\n', '\n')
-        lines.append(line_text)
-
-    return '\n'.join(lines)
-
-
-def fix_code_blocks(soup, full_soup):
-    """
-    Encontra os blocos de código com a classe `ch-codeblock`,
-    extrai o texto linha a linha e substitui por um placeholder único.
-
-    Retorna um dicionário { placeholder: fenced_code_block } para
-    ser restaurado após a conversão para Markdown, garantindo que
-    os blocos fiquem com cercas (```) e linguagem correta.
-    """
-    placeholders = {}
-
-    for i, codeblock in enumerate(soup.select('.ch-codeblock')):
-        code_scroll_parent = codeblock.select_one('.ch-code-scroll-parent')
-        if not code_scroll_parent:
-            continue
-
-        # lang fica em data-ch-lang no .ch-code-scroll-parent
-        lang = code_scroll_parent.get('data-ch-lang', '')
-
-        # Extrai linhas corretamente
-        raw_code = extract_code_lines(code_scroll_parent).strip()
-
-        # Monta o bloco cercado com backticks e linguagem
-        fence = f"```{lang}\n{raw_code}\n```"
-
-        # Placeholder único que sobrevive à conversão HTML→MD
-        placeholder = f"CODEBLOCK_PLACEHOLDER_{i}"
-        placeholders[placeholder] = fence
-
-        # Substitui o bloco inteiro pelo placeholder no HTML
-        placeholder_tag = full_soup.new_tag("p")
-        placeholder_tag.string = placeholder
-        codeblock.insert_after(placeholder_tag)
-        codeblock.extract()
-
-    return placeholders
-
-
-def restore_code_blocks(markdown, placeholders):
-    """
-    Substitui os placeholders no Markdown final pelos blocos
-    de código cercados com backticks.
-    """
-    for placeholder, fence in placeholders.items():
-        markdown = markdown.replace(placeholder, f"\n{fence}\n")
-    return markdown
-
-
 # ---------------------------------------------------------------------------
 # Merge logic
 # ---------------------------------------------------------------------------
 
-def read_manual_content(filepath):
+def read_manual_content(filepath: str) -> tuple[str, str]:
     """
-    Lê o conteúdo manual de um arquivo existente — tudo que está
-    FORA dos marcadores SCRAPED:START / SCRAPED:END.
+    Lê o conteúdo manual de um arquivo existente — tudo fora dos marcadores.
 
-    Retorna uma tupla (before, after) onde:
-      - before: texto antes de SCRAPED:START (ex: título manual no topo)
-      - after:  texto após SCRAPED:END (ex: seções de boas práticas, exemplos)
+    Retorna (before, after):
+      - before: texto antes de SCRAPED:START
+      - after:  texto após SCRAPED:END (suas adições manuais, nunca sobrescritas)
 
     Se o arquivo não existir ou não tiver marcadores, retorna ("", "").
+    Arquivos sem marcadores têm o conteúdo inteiro preservado como seção "after".
     """
     if not os.path.exists(filepath):
         return ("", "")
@@ -169,9 +152,7 @@ def read_manual_content(filepath):
         content = f.read()
 
     if SCRAPE_START not in content:
-        # Arquivo existe mas foi criado antes do sistema de marcadores.
-        # Trata o conteúdo inteiro como seção "after" para preservar tudo.
-        print(f"  [Aviso] Arquivo sem marcadores encontrado. Conteúdo preservado como seção manual.")
+        print(f"  [Aviso] Arquivo sem marcadores. Conteúdo preservado como seção manual.")
         return ("", content)
 
     start_idx = content.index(SCRAPE_START)
@@ -183,22 +164,20 @@ def read_manual_content(filepath):
     return (before, after)
 
 
-def build_merged_content(title, scraped_markdown, before, after):
+def build_merged_content(readme_markdown: str, before: str, after: str) -> str:
     """
-    Monta o arquivo final mesclando o conteúdo scraped com o conteúdo manual.
+    Monta o arquivo final mesclando o README scraped com o conteúdo manual.
 
     Estrutura resultante:
-      {before}                  ← conteúdo manual acima (se houver)
+      {before}                ← conteúdo manual acima (se houver)
       <!-- SCRAPED:START -->
-      # Título
-      {scraped_markdown}        ← atualizado a cada scraping
+      {readme_markdown}       ← README do GitHub, atualizado a cada scraping
       <!-- SCRAPED:END -->
-      {after}                   ← suas adições manuais (nunca sobrescritas)
+      {after}                 ← suas adições manuais (nunca sobrescritas)
     """
     scraped_block = (
         f"{SCRAPE_START}\n"
-        f"# {title}\n\n"
-        f"{scraped_markdown.strip()}\n"
+        f"{readme_markdown.strip()}\n"
         f"{SCRAPE_END}"
     )
 
@@ -216,131 +195,91 @@ def build_merged_content(title, scraped_markdown, before, after):
 # Scrape principal
 # ---------------------------------------------------------------------------
 
-def scrape_component(url, output_dir):
-    """Navega para a URL de um componente, extrai o conteúdo e salva em markdown."""
-    print(f"Scrape: {url}")
-    soup = fetch_page(url)
-    if not soup:
+def scrape_component(github_url: str, output_dir: str) -> None:
+    """Busca o README de um repositório GitHub e salva como markdown."""
+    print(f"Scrape: {github_url}")
+
+    result = fetch_readme(github_url)
+    if not result:
         return
 
-    # Título
-    title_element = soup.select_one('.title.css-1s43qfw')
-    if title_element:
-        title_text = title_element.get_text(strip=True)
-    else:
-        print(f"  [Aviso] Título não encontrado para {url}. Usando 'Componente Desconhecido'.")
-        title_text = "Componente Desconhecido"
+    title, readme_markdown = result
 
-    # Conteúdo
-    content_element = soup.select_one('.css-iourwr')
-    if not content_element:
-        print(f"  [Aviso] Conteúdo (css-iourwr) não encontrado para {url}.")
-        return
+    filename  = format_filename(title)
+    filepath  = os.path.join(output_dir, filename)
+    file_exists = os.path.exists(filepath)
 
-    # Substitui blocos de código por placeholders antes da conversão
-    placeholders = fix_code_blocks(content_element, soup)
-
-    converter = html2text.HTML2Text()
-    converter.ignore_links = False
-    converter.body_width = 0
-    converter.protect_links = True
-    converter.use_automatic_links = False
-
-    scraped_markdown = converter.handle(str(content_element))
-
-    # Restaura os blocos de código com cercas (```) no lugar dos placeholders
-    scraped_markdown = restore_code_blocks(scraped_markdown, placeholders)
-
-    # Caminho do arquivo
-    filename = format_filename(title_text)
-    filepath = os.path.join(output_dir, filename)
-
-    # Lê conteúdo manual existente (preserva seções fora dos marcadores)
     before, after = read_manual_content(filepath)
+    final_content = build_merged_content(readme_markdown, before, after)
 
-    # Monta conteúdo final mesclado
-    final_content = build_merged_content(title_text, scraped_markdown, before, after)
-
-    # Salva
     try:
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write(final_content)
-        action = "Atualizado" if os.path.exists(filepath) else "Criado"
-        print(f"  -> {action}: {filepath}")
+        action = "Atualizado" if file_exists else "Criado"
+        print(f"  -> {action}: {filepath}  [{title}]")
     except IOError as e:
-        print(f"  [Erro] Falha ao salvar arquivo {filepath}: {e}")
+        print(f"  [Erro] Falha ao salvar {filepath}: {e}")
 
 
 # ---------------------------------------------------------------------------
-# Links
+# Repositórios
 # ---------------------------------------------------------------------------
 
-BASIC_COMPONENTS_LINKS = [
-    "https://developers.vtex.com/docs/apps/vtex.add-to-cart-button",
-    "https://developers.vtex.com/docs/apps/vtex.breadcrumb",
-    "https://developers.vtex.com/docs/apps/vtex.store-footer",
-    "https://developers.vtex.com/docs/guides/google-one-tap-login",
-    "https://developers.vtex.com/docs/apps/vtex.store-header",
-    "https://developers.vtex.com/docs/apps/vtex.locale-switcher",
-    "https://developers.vtex.com/docs/apps/vtex.login",
-    "https://developers.vtex.com/docs/apps/vtex.menu",
-    "https://developers.vtex.com/docs/apps/vtex.minicart",
-    "https://developers.vtex.com/docs/apps/vtex.order-placed",
-    "https://developers.vtex.com/docs/apps/vtex.product-customizer",
-    "https://developers.vtex.com/docs/apps/vtex.product-identifier",
-    "https://developers.vtex.com/docs/apps/vtex.product-list",
-    "https://developers.vtex.com/docs/apps/vtex.product-price",
-    "https://developers.vtex.com/docs/apps/vtex.product-quantity",
-    "https://developers.vtex.com/docs/apps/vtex.product-summary/productsummaryspecificationbadges",
-    "https://developers.vtex.com/docs/apps/vtex.product-summary",
-    "https://developers.vtex.com/docs/apps/vtex.product-summary/productsummaryattachmentlist",
-    "https://developers.vtex.com/docs/apps/vtex.product-summary/productsummarybrand",
-    "https://developers.vtex.com/docs/apps/vtex.product-summary/productsummarybuybutton",
-    "https://developers.vtex.com/docs/apps/vtex.product-summary/productsummarydescription",
-    "https://developers.vtex.com/docs/apps/vtex.product-summary/productsummaryimage",
-    "https://developers.vtex.com/docs/apps/vtex.product-summary/productsummarylist",
-    "https://developers.vtex.com/docs/apps/vtex.product-summary/productsummaryname",
-    "https://developers.vtex.com/docs/apps/vtex.product-summary/productsummaryskuselector",
-    "https://developers.vtex.com/docs/apps/vtex.rich-text",
-    "https://developers.vtex.com/docs/apps/vtex.search",
-    "https://developers.vtex.com/docs/apps/vtex.search-result",
-    "https://developers.vtex.com/docs/apps/vtex.shelf",
-    "https://developers.vtex.com/docs/apps/vtex.store-image"
+BASIC_COMPONENTS = [
+    "https://github.com/vtex-apps/add-to-cart-button",
+    "https://github.com/vtex-apps/breadcrumb",
+    "https://github.com/vtex-apps/store-footer",
+    "https://github.com/vtex-apps/store-header",
+    "https://github.com/vtex-apps/locale-switcher",
+    "https://github.com/vtex-apps/login",
+    "https://github.com/vtex-apps/menu",
+    "https://github.com/vtex-apps/minicart",
+    "https://github.com/vtex-apps/order-placed",
+    "https://github.com/vtex-apps/product-customizer",
+    "https://github.com/vtex-apps/product-identifier",
+    "https://github.com/vtex-apps/product-list",
+    "https://github.com/vtex-apps/product-price",
+    "https://github.com/vtex-apps/product-quantity",
+    "https://github.com/vtex-apps/product-summary",
+    "https://github.com/vtex-apps/rich-text",
+    "https://github.com/vtex-apps/search",
+    "https://github.com/vtex-apps/search-result",
+    "https://github.com/vtex-apps/shelf",
+    "https://github.com/vtex-apps/store-image",
 ]
 
-LAYOUT_LINKS = [
-    "https://developers.vtex.com/docs/apps/vtex.condition-layout",
-    "https://developers.vtex.com/docs/apps/vtex.flex-layout",
-    "https://developers.vtex.com/docs/apps/vtex.disclosure-layout",
-    "https://developers.vtex.com/docs/apps/vtex.modal-layout",
-    "https://developers.vtex.com/docs/apps/vtex.overlay-layout",
-    "https://developers.vtex.com/docs/apps/vtex.responsive-layout",
-    "https://developers.vtex.com/docs/apps/vtex.slider-layout",
-    "https://developers.vtex.com/docs/apps/vtex.stack-layout",
-    "https://developers.vtex.com/docs/apps/vtex.sticky-layout",
-    "https://developers.vtex.com/docs/apps/vtex.tab-layout"
+LAYOUT = [
+    "https://github.com/vtex-apps/condition-layout",
+    "https://github.com/vtex-apps/flex-layout",
+    "https://github.com/vtex-apps/disclosure-layout",
+    "https://github.com/vtex-apps/modal-layout",
+    "https://github.com/vtex-apps/overlay-layout",
+    "https://github.com/vtex-apps/responsive-layout",
+    "https://github.com/vtex-apps/slider-layout",
+    "https://github.com/vtex-apps/stack-layout",
+    "https://github.com/vtex-apps/sticky-layout",
+    "https://github.com/vtex-apps/tab-layout",
 ]
 
-ADVANCED_COMPONENTS_LINKS = [
-    "https://developers.vtex.com/docs/apps/vtex.category-menu",
-    "https://developers.vtex.com/docs/apps/vtex.iframe",
-    "https://developers.vtex.com/docs/apps/vtex.product-availability",
-    "https://developers.vtex.com/docs/apps/vtex.product-comparison",
-    "https://developers.vtex.com/docs/apps/vtex.product-gifts",
-    "https://developers.vtex.com/docs/apps/vtex.product-kit",
-    "https://developers.vtex.com/docs/apps/vtex.recommendation-shelf",
-    "https://developers.vtex.com/docs/apps/vtex.product-specification-badges",
-    "https://developers.vtex.com/docs/apps/vtexventures.livestreaming",
-    "https://developers.vtex.com/docs/apps/vtex.reviews-and-ratings",
-    "https://developers.vtex.com/docs/apps/vtex.sandbox",
-    "https://developers.vtex.com/docs/apps/vtex.seller-selector",
-    "https://developers.vtex.com/docs/apps/vtex.store-drawer",
-    "https://developers.vtex.com/docs/apps/vtex.store-locator",
-    "https://developers.vtex.com/docs/apps/vtex.store-form",
-    "https://developers.vtex.com/docs/apps/vtex.store-link",
-    "https://developers.vtex.com/docs/apps/vtex.store-media",
-    "https://developers.vtex.com/docs/apps/vtex.store-newsletter",
-    "https://developers.vtex.com/docs/apps/vtex.store-video"
+ADVANCED_COMPONENTS = [
+    "https://github.com/vtex-apps/category-menu",
+    "https://github.com/vtex-apps/iframe",
+    "https://github.com/vtex-apps/product-availability",
+    "https://github.com/vtex-apps/product-comparison",
+    "https://github.com/vtex-apps/product-gifts",
+    "https://github.com/vtex-apps/product-kit",
+    "https://github.com/vtex-apps/recommendation-shelf",
+    "https://github.com/vtex-apps/product-specification-badges",
+    "https://github.com/vtex-apps/reviews-and-ratings",
+    "https://github.com/vtex-apps/sandbox",
+    "https://github.com/vtex-apps/seller-selector",
+    "https://github.com/vtex-apps/store-drawer",
+    "https://github.com/vtex-apps/store-locator",
+    "https://github.com/vtex-apps/store-form",
+    "https://github.com/vtex-apps/store-link",
+    "https://github.com/vtex-apps/store-media",
+    "https://github.com/vtex-apps/store-newsletter",
+    "https://github.com/vtex-apps/store-video",
 ]
 
 
@@ -352,15 +291,11 @@ def main():
     output_dir = './skills/vtex-io-core/components'
     os.makedirs(output_dir, exist_ok=True)
 
-    component_links = LAYOUT_LINKS + BASIC_COMPONENTS_LINKS + ADVANCED_COMPONENTS_LINKS
+    all_links = LAYOUT + BASIC_COMPONENTS + ADVANCED_COMPONENTS
 
-    if not component_links:
-        print("Nenhum link encontrado. Abortando.")
-        sys.exit(0)
+    print(f"Total: {len(all_links)} repositórios. Iniciando scraping...\n")
 
-    print(f"Encontrados {len(component_links)} componentes. Iniciando scraping...\n")
-
-    for link in component_links:
+    for link in all_links:
         scrape_component(link, output_dir)
 
     print("\nProcesso finalizado!")

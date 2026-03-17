@@ -282,6 +282,11 @@ ADVANCED_COMPONENTS = [
     "https://github.com/vtex-apps/store-video",
 ]
 
+OTHER_COMPONENTS = [
+    "https://github.com/vtex-apps/list-context",
+    "https://github.com/vtex-apps/product-list-context",
+]
+
 
 # ---------------------------------------------------------------------------
 # Main
@@ -291,7 +296,7 @@ def main():
     output_dir = './skills/vtex-io-core/components'
     os.makedirs(output_dir, exist_ok=True)
 
-    all_links = LAYOUT + BASIC_COMPONENTS + ADVANCED_COMPONENTS
+    all_links = LAYOUT + BASIC_COMPONENTS + ADVANCED_COMPONENTS + OTHER_COMPONENTS
 
     print(f"Total: {len(all_links)} repositórios. Iniciando scraping...\n")
 

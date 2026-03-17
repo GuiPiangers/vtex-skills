@@ -242,3 +242,4 @@ Example:
 - `skills/vtex-io-core/components/slider-layout.md`
 
 
+

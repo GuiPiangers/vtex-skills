@@ -269,3 +269,4 @@ When using `slider-layout-group` to sync multiple sliders:
 - Setting `infinite: true` with high `itemsPerPage` can make navigation feel "stuck" on small collections.
 
 
+

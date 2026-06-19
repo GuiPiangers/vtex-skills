@@ -265,3 +265,4 @@ import { ProductListContext } from 'vtex.product-list-context'
 import { ProductContextProvider } from 'vtex.product-context'
 import { ProductSummaryContext } from 'vtex.product-summary-context'
 ```
+

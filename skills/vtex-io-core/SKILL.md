@@ -52,6 +52,8 @@ Agent reasoning:
 | `skills/vtex-io-core/components/product-prices.md` | 🟠 HIGH | product prices, shelf, product price | Product prices display |
 | **Components (Official Docs, Scraped)** ||||
 | `skills/vtex-io-core/components/add-to-cart-button.md` | 🟠 HIGH | add to cart button, add-to-cart-button | Official component documentation (scraped): add to cart button |
+| `skills/vtex-io-core/components/availability-subscriber.md` | 🟡 MEDIUM | availability subscriber, availability-subscriber, out of stock, notify availability | Official component documentation (scraped): availability subscriber |
+| `skills/vtex-io-core/components/back-to-top-button.md` | 🟡 MEDIUM | back to top, back-to-top-button, scroll to top | Official component documentation (scraped): back to top button |
 | `skills/vtex-io-core/components/breadcrumb.md` | 🟠 HIGH | breadcrumb, breadcrumb | Official component documentation (scraped): breadcrumb |
 | `skills/vtex-io-core/components/category-menu.md` | 🟡 MEDIUM | category menu, category-menu | Official component documentation (scraped): category menu |
 | `skills/vtex-io-core/components/componente-desconhecido.md` | 🟡 MEDIUM | componente desconhecido, componente-desconhecido | Official component documentation (scraped): componente desconhecido |
@@ -62,6 +64,7 @@ Agent reasoning:
 | `skills/vtex-io-core/components/header.md` | 🟠 HIGH | header, header | Official component documentation (scraped): header |
 | `skills/vtex-io-core/components/iframe.md` | 🟡 MEDIUM | iframe, iframe | Official component documentation (scraped): iframe |
 | `skills/vtex-io-core/components/live-shopping.md` | 🟡 MEDIUM | live shopping, live-shopping | Official component documentation (scraped): live shopping |
+| `skills/vtex-io-core/components/list-context.md` | 🟠 HIGH | list context, list-context, image list, product list, site editor list | Official component documentation (scraped): list context architecture |
 | `skills/vtex-io-core/components/locale-switcher.md` | 🟡 MEDIUM | locale switcher, locale-switcher | Official component documentation (scraped): locale switcher |
 | `skills/vtex-io-core/components/login.md` | 🟠 HIGH | login, login | Official component documentation (scraped): login |
 | `skills/vtex-io-core/components/media.md` | 🟡 MEDIUM | media, media | Official component documentation (scraped): media |
@@ -71,13 +74,18 @@ Agent reasoning:
 | `skills/vtex-io-core/components/order-placed.md` | 🟠 HIGH | order placed, order-placed | Official component documentation (scraped): order placed |
 | `skills/vtex-io-core/components/overlay-layout.md` | 🟡 MEDIUM | overlay layout, overlay-layout | Official component documentation (scraped): overlay layout |
 | `skills/vtex-io-core/components/product-availability.md` | 🟡 MEDIUM | product availability, product-availability | Official component documentation (scraped): product availability |
+| `skills/vtex-io-core/components/product-brand.md` | 🟠 HIGH | product brand, product-brand, brand logo, brand name | Official component documentation (scraped): product brand |
 | `skills/vtex-io-core/components/product-comparison.md` | 🟡 MEDIUM | product comparison, product-comparison | Official component documentation (scraped): product comparison |
 | `skills/vtex-io-core/components/product-customizer.md` | 🟡 MEDIUM | product customizer, product-customizer | Official component documentation (scraped): product customizer |
+| `skills/vtex-io-core/components/product-description.md` | 🟠 HIGH | product description, product-description, PDP description | Official component documentation (scraped): product description |
 | `skills/vtex-io-core/components/product-gifts.md` | 🟡 MEDIUM | product gifts, product-gifts | Official component documentation (scraped): product gifts |
 | `skills/vtex-io-core/components/product-identifier.md` | 🟡 MEDIUM | product identifier, product-identifier | Official component documentation (scraped): product identifier |
 | `skills/vtex-io-core/components/product-list.md` | 🟠 HIGH | product list, product-list | Official component documentation (scraped): product list |
+| `skills/vtex-io-core/components/product-list-context.md` | 🟠 HIGH | product list context, product-list-context, ProductListProvider, custom product list, impression events | Product list context + custom list guide (scraped + manual) |
+| `skills/vtex-io-core/components/product-name.md` | 🟠 HIGH | product name, product-name, PDP title | Official component documentation (scraped): product name |
 | `skills/vtex-io-core/components/product-price.md` | 🟠 HIGH | product price, product-price | Official component documentation (scraped): product price |
 | `skills/vtex-io-core/components/product-quantity.md` | 🟡 MEDIUM | product quantity, product-quantity | Official component documentation (scraped): product quantity |
+| `skills/vtex-io-core/components/product-sku-attributes.md` | 🟡 MEDIUM | product sku attributes, product-sku-attributes, sku variations | Official component documentation (scraped): product SKU attributes |
 | `skills/vtex-io-core/components/product-specification-badges.md` | 🟡 MEDIUM | product specification badges, product-specification-badges | Official component documentation (scraped): product specification badges |
 | `skills/vtex-io-core/components/product-summary-attachment-list.md` | 🟡 MEDIUM | product summary attachment list, product-summary-attachment-list | Official component documentation (scraped): product summary attachment list |
 | `skills/vtex-io-core/components/product-summary-brand.md` | 🟡 MEDIUM | product summary brand, product-summary-brand | Official component documentation (scraped): product summary brand |
@@ -93,6 +101,8 @@ Agent reasoning:
 | `skills/vtex-io-core/components/search-result.md` | 🟠 HIGH | search result, search-result | Official component documentation (scraped): search result |
 | `skills/vtex-io-core/components/search.md` | 🟠 HIGH | search, search | Official component documentation (scraped): search |
 | `skills/vtex-io-core/components/seller-selector.md` | 🟡 MEDIUM | seller selector, seller-selector | Official component documentation (scraped): seller selector |
+| `skills/vtex-io-core/components/share.md` | 🟡 MEDIUM | share, share button, social share, product share | Official component documentation (scraped): share |
+| `skills/vtex-io-core/components/shipping-simulator.md` | 🟠 HIGH | shipping simulator, shipping-simulator, freight, zip code, shipping fee | Official component documentation (scraped): shipping simulator |
 | `skills/vtex-io-core/components/shelf.md` | 🟠 HIGH | shelf, shelf | Official component documentation (scraped): shelf |
 | `skills/vtex-io-core/components/stack-layout.md` | 🟡 MEDIUM | stack layout, stack-layout | Official component documentation (scraped): stack layout |
 | `skills/vtex-io-core/components/store-form.md` | 🟡 MEDIUM | store form, store-form | Official component documentation (scraped): store form |
@@ -141,6 +151,18 @@ Task: "Create a custom product badge component"
 Task: "Build PDP with product info and add to cart button"
 → Triggers: "product info", "add to cart"
 → Loads: skills/vtex-io-core/contexts/product-context.md (🟠), skills/vtex-io-core/contexts/useOrderForm.md (🟠)
+
+Task: "Build PDP with name, description, brand, and shipping simulator"
+→ Triggers: "product name", "product description", "shipping simulator", "PDP"
+→ Loads: skills/vtex-io-core/components/product-name.md (🟠), skills/vtex-io-core/components/product-description.md (🟠), skills/vtex-io-core/components/product-brand.md (🟠), skills/vtex-io-core/components/shipping-simulator.md (🟠)
+
+Task: "Create editable product list via Site Editor"
+→ Triggers: "list context", "list-context.product-list", "site editor list"
+→ Loads: skills/vtex-io-core/components/list-context.md (🟠), skills/vtex-io-core/components/product-summary.md (🟠)
+
+Task: "Create custom product shelf with impression tracking"
+→ Triggers: "product list context", "ProductListProvider", "custom shelf", "impression events"
+→ Loads: skills/vtex-io-core/components/product-list-context.md (🟠), skills/vtex-io-core/contexts/product-context.md (🟠), skills/vtex-io-core/components/product-summary.md (🟠)
 
 Task: "Create responsive grid layout for homepage"
 → Triggers: "responsive", "grid", "layout"
@@ -369,6 +391,12 @@ Dynamic injection via `<ExtensionPoint />`.
 
 📊 Need product/cart data in component
   → Load: skills/vtex-io-core/contexts/product-context.md or skills/vtex-io-core/contexts/useOrderForm.md (🟠)
+
+🛒 Building or customizing a product list/shelf
+  → Load: skills/vtex-io-core/components/list-context.md (🟠) or skills/vtex-io-core/components/product-list-context.md (🟠)
+
+📄 Composing a PDP (name, description, brand, shipping, share)
+  → Load: skills/vtex-io-core/components/product-name.md, product-description.md, product-brand.md (🟠)
 
 🔌 Calling external APIs
   → Load: skills/vtex-io-core/backend/clients.md (🔴)
